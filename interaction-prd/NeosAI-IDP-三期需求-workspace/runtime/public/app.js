@@ -44,15 +44,19 @@ async function boot() {
   state.manifest = await api('/api/manifest');
   $('#product-name').textContent = state.manifest.product.name;
   $('#product-type').textContent = `${state.manifest.product.type} / ${state.manifest.product.status}`;
-  if(state.manifest.deployment?.cloud&&!state.manifest.deployment.writable){
-    const notice=document.createElement('div');notice.className='prd-deployment-notice';notice.textContent='只读预览 · 连接持久化存储后可编辑、评论和发布。';document.querySelector('.topbar').after(notice);
-    $('#edit-button').disabled=true;$('#edit-button').title='连接持久化存储后可编辑';
-  }
+  syncDeploymentUi();
   renderNav();
   bind();
   await selectModule(firstVisibleModule()?.id);
   await prdVersions.refresh();
   setInterval(refreshExternalChanges, 2500);
+}
+
+function syncDeploymentUi(){
+  const readonly=state.manifest.deployment?.cloud&&!state.manifest.deployment.writable;
+  let notice=document.querySelector('.prd-deployment-notice');
+  if(readonly){if(!notice){notice=document.createElement('div');notice.className='prd-deployment-notice';document.querySelector('.topbar').after(notice)}notice.textContent='只读预览 · 连接持久化存储后可编辑、评论和发布。'}else notice?.remove();
+  $('#edit-button').disabled=!!readonly;$('#edit-button').title=readonly?'连接持久化存储后可编辑':'';
 }
 
 function moduleKind(module) { return module.kind || 'prd'; }
@@ -468,7 +472,7 @@ async function refreshExternalChanges() {
   if (!state.module || state.editorDirty || $('#editor').open || canvasEditor.isBusy()) return;
   try {
     const manifest = await api('/api/manifest');
-    if (JSON.stringify(manifest) !== JSON.stringify(state.manifest)) { const moduleId = state.module.id; state.manifest = manifest; state.canvasPositions = new Map(); renderNav(); const current = manifest.modules.find((module) => module.id === moduleId && !module.hidden); await selectModule(current?.id || firstVisibleModule()?.id); toast('已加载 Agent 更新的项目结构'); return; }
+    if (JSON.stringify(manifest) !== JSON.stringify(state.manifest)) { const moduleId = state.module.id; state.manifest = manifest; syncDeploymentUi(); await prdVersions.refresh(); state.canvasPositions = new Map(); renderNav(); const current = manifest.modules.find((module) => module.id === moduleId && !module.hidden); await selectModule(current?.id || firstVisibleModule()?.id); toast('已加载 Agent 更新的项目结构'); return; }
     const watched = [state.module.prd, state.page?.file].filter(Boolean);
     for (const path of watched) {
       const result = await api(`/api/file?path=${encodeURIComponent(path)}`);

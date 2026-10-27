@@ -3,10 +3,10 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   },
   "scripts": {
-    "setup": "npm --prefix prototype ci && npm --prefix interaction-prd/NeosAI-IDP-\u4e09\u671f\u9700\u6c42-workspace ci",
+    "setup": "npm --prefix prototype ci && npm --prefix interaction-prd/NeosAI-IDP-三期需求-workspace ci",
     "dev": "node scripts/dev.mjs",
     "build": "npm --prefix prototype run build && node scripts/build-prd-html.mjs",
     "test": "node --test scripts/*.test.mjs",
