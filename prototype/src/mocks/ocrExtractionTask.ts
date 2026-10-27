@@ -1,5 +1,5 @@
 import { compareSimilarityCandidates, compareMasterCandidateSources } from './masterCandidateOrder'
-import { autoAdoptScenarioFields, manualReviewScenarioFields } from './masterMatchScenarioFixtures'
+import { autoAdoptDemoFields, manualReviewDemoFields } from './masterMatchScenarioFixtures'
 import { customerIcdSample } from './customerIcdSample'
 import { MOCK_SAMPLE_MEDIA_URL } from '@/constants/mockSampleMedia'
 import { t } from '@/i18n/translate'
@@ -552,8 +552,8 @@ const RICH_TASKS: Record<string, Omit<OcrExtractionTaskDetail, 'taskId'>> = {
         fields: createDiagnosisFormFields(),
         tables: []
       },
-      {id:'page-master-auto',docType:'マスタ照合（自動採用）',fileName:'',imageUrl:MOCK_SAMPLE_MEDIA_URL,pageCount:1,fields:autoAdoptScenarioFields(),tables:[]},
-      {id:'page-master-review',docType:'マスタ照合（要確認）',fileName:'',imageUrl:MOCK_SAMPLE_MEDIA_URL,pageCount:1,fields:manualReviewScenarioFields(),tables:[]},
+      {id:'page-master-auto',docType:'マスタ照合（自動採用）',fileName:'',imageUrl:MOCK_SAMPLE_MEDIA_URL,pageCount:1,fields:autoAdoptDemoFields(),tables:[]},
+      {id:'page-master-review',docType:'マスタ照合（要確認）',fileName:'',imageUrl:MOCK_SAMPLE_MEDIA_URL,pageCount:1,fields:manualReviewDemoFields(),tables:[]},
       {
         id: 'page-receipt-detail-1',
         docType: '領収書・診療明細書',

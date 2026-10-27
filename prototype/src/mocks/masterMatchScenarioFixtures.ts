@@ -49,3 +49,15 @@ export function manualReviewScenarioFields():OcrExtractionField[]{
  const snapshots=(id:string,label:string,error?:string)=>field(id,label,[0,1],[88,85],{phase3Matched:true,masterMatchConfirmRule:'low-similarity',masterMatchError:error})
  return [field('review-single','M1 類似度：候補1件、閾値未満',[0],[88]),field('review-tie','M2 最高同率でも閾値未満・階層なし',[0,1,10],[88,88,81],{masterCodeColumnId:'not-bound'}),untrusted,field('review-flat','M4 階層ファイルなし：遡及不可',[0,1],[88,85],{masterCodeColumnId:'not-bound'}),field('review-unmapped','M5 候補のコードに公式階層がない',[0,1],[88,85],{masterMatchCandidates:[candidate('review-unmapped',0,'hybrid',88),{value:'階層未設定の傷病名',strategy:'hybrid',similarityScore:85,linkedValues:{'review-unmapped':'階層未設定の傷病名','review-unmapped-icd':'X999'}}]}),field('review-no-parent','M6 最上位まで遡及しても共通父級なし',[0,14],[88,85]),...bankGroup('review-bank','M7 グループ：候補を選んで一括確認',88),...parentFields,field('review-qualified-tie','M13 類似度：最高点が閾値以上でも同率なら確認',[1,0,10],[93,93,81]),...diseaseGroup('review-group-qualified-tie','M14 グループ：最高点が閾値以上でも同率なら確認',[1,0,10],[93,93,81]),snapshots('review-cycle','M9 父子関係の欠落・循環で遡及不可（境界状態）'),snapshots('review-query-error','M10 検索APIの失敗・タイムアウト','検索に失敗しました。時間をおいて再度確認してください。'),snapshots('review-model-error','M11 モデルの検証呼び出し失敗','モデルによる検証に失敗しました。'),field('review-code-multi-flat','M12 コード複数一致・階層なし',[0,1],[88,85],{masterCodeColumnId:'not-bound',masterMatchCandidates:[candidate('review-code-multi-flat',0,'code'),candidate('review-code-multi-flat',1,'code'),candidate('review-code-multi-flat',0,'hybrid',88),candidate('review-code-multi-flat',1,'hybrid',85)]}),field('review-no-candidate','候補なし：OCR原値を保持して確認',[],[],{confidence:97})]
 }
+
+// Keep exhaustive fixtures available for regression tests; the prototype shows representative cases.
+export function autoAdoptDemoFields():OcrExtractionField[]{
+ const all=autoAdoptScenarioFields()
+ const selected=new Set(all.filter(item=>/^(A1|A3|A9|A14) /.test(item.label)).map(item=>item.id))
+ return all.filter(item=>selected.has(item.id)||!!item.masterMatchLinkedTo&&selected.has(item.masterMatchLinkedTo))
+}
+export function manualReviewDemoFields():OcrExtractionField[]{
+ const all=manualReviewScenarioFields()
+ const selected=new Set(all.filter(item=>/^(M1|M3|M8|M10|M13) /.test(item.label)||item.id==='review-no-candidate').map(item=>item.id))
+ return all.filter(item=>selected.has(item.id)||!!item.masterMatchLinkedTo&&selected.has(item.masterMatchLinkedTo))
+}
