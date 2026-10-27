@@ -1,6 +1,7 @@
 import { i18n } from './index'
 // Translate fixture UI labels at render time; never change record values or matching keys.
 const chinese:Record<string,string>={
+ 'M5 コード検索・類似度検索ともに候補なし':'M5 code与类似度检索均无结果',
  'A2 類似度：最高分が閾値を超える':'A2 类似度最高分超过自动采用阈值',
  'A3 コード検索・親階層検索が共存':'A3 两条code＋Top 3＋父级＋OCR，共七条',
  'A4 グループ：類似度候補から父級を採用':'A4 整组类似度多候选，回溯官方节点',
