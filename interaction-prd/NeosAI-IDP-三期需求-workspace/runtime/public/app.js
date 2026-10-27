@@ -44,6 +44,10 @@ async function boot() {
   state.manifest = await api('/api/manifest');
   $('#product-name').textContent = state.manifest.product.name;
   $('#product-type').textContent = `${state.manifest.product.type} / ${state.manifest.product.status}`;
+  if(state.manifest.deployment?.cloud&&!state.manifest.deployment.writable){
+    const notice=document.createElement('div');notice.className='prd-deployment-notice';notice.textContent='只读预览 · 连接持久化存储后可编辑、评论和发布。';document.querySelector('.topbar').after(notice);
+    $('#edit-button').disabled=true;$('#edit-button').title='连接持久化存储后可编辑';
+  }
   renderNav();
   bind();
   await selectModule(firstVisibleModule()?.id);
@@ -368,7 +372,7 @@ async function autoLayoutCanvas() {
 
 function editorOptions() {
   const options = [{ label: `文档 / ${state.module.title}`, path: state.module.prd }];
-  if (state.page) { options.push({ label: `HTML / ${state.page.title}`, path: state.page.file });  }
+  if (state.page&&!state.manifest.deployment?.cloud) { options.push({ label: `HTML / ${state.page.title}`, path: state.page.file });  }
   return options;
 }
 

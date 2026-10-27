@@ -1,0 +1,8 @@
+// Durable cloud state. Compare-and-set prevents two function instances overwriting each other.
+export function createCloudStore({env=process.env,fetchImpl=fetch}={}){
+ const url=env.UPSTASH_REDIS_REST_URL||env.KV_REST_API_URL,token=env.UPSTASH_REDIS_REST_TOKEN||env.KV_REST_API_TOKEN;
+ const key=env.PRD_STORAGE_KEY||('neosai-idp-ph3:prd-state'+(env.VERCEL_ENV==='preview'?':preview:'+(env.VERCEL_GIT_COMMIT_REF||'default'):''));
+ const writable=!!(url&&token);
+ async function command(args){const endpoint=new URL(url);if(endpoint.protocol!=='https:')throw Error('存储连接须使用 HTTPS');const response=await fetchImpl(endpoint,{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(args),signal:AbortSignal.timeout(10000)});if(!response.ok)throw Error('持久化存储连接失败');const result=await response.json();if(result.error)throw Error('持久化存储操作失败');return result.result;}
+ return {writable,async load(){if(!writable)return {value:null,revision:null};const raw=await command(['GET',key]);const value=raw?JSON.parse(raw):null;return {value,revision:value?.revision||null};},async save(value,expectedRevision){if(!writable){const error=Error('尚未连接持久化存储，当前为只读模式');error.status=503;throw error;}const script="local old=redis.call('GET',KEYS[1]); local revision=''; if old then revision=cjson.decode(old).revision end; if revision~=ARGV[1] then return 0 end; redis.call('SET',KEYS[1],ARGV[2]); return 1";const result=await command(['EVAL',script,'1',key,expectedRevision||'',JSON.stringify(value)]);if(result!==1){const error=Error('内容已被其他人修改，请刷新后重试，当前输入仍保留');error.status=409;throw error;}}};
+}

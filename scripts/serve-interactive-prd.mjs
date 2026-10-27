@@ -1,7 +1,7 @@
+import {reviewManifest} from './prd-review-manifest.mjs';
 import {selectPrdSources} from './prd-model-selector.mjs';
 import {searchPrd} from './prd-search.mjs';
 import {createPrdComments} from './prd-comments.mjs';
-import {pageSpecs,pageKey} from './prd-page-sections.mjs';
 import http from 'node:http';
 import {createPrdHistory} from './prd-history.mjs';
 import {mergeCanvasManifest} from './canvas-manifest.mjs';
@@ -12,13 +12,6 @@ import {moduleSections,readSection} from './prd-sections.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),workspace=path.join(root,'interaction-prd/NeosAI-IDP-三期需求-workspace'),canonical=process.env.PRD_CANONICAL_PATH||path.join(root,'PRD.zh-CN.md');
 try{process.loadEnvFile(path.join(root,'.env.local'))}catch(error){if(error.code!=='ENOENT')throw error}
 const history=createPrdHistory({canonical,directory:process.env.PRD_HISTORY_DIR||path.join(root,'.prd-history')});
-function reviewManifest(base){
- const pages=base.pages.filter(p=>p.kind==='page'),ids=pages.map(p=>p.id),titles=['文档基础与范围','术语与词汇表','数据结构与状态','用户交互流程','全量功能清单'];
- const bindings=[[],[],[],[],[]];
- const overview=titles.map((title,i)=>({id:'chapter-'+String(i+1).padStart(2,'0'),title:'第'+(i+1)+'章｜'+title,prd:'prd/chapter-'+String(i+1).padStart(2,'0')+'.md',kind:'prd',pages:bindings[i],status:'draft'}));
- const details=pageSpecs.filter(spec=>ids.includes(spec.id)).map((spec,i)=>({id:'detail-'+spec.id,title:spec.title,navNumber:'6.'+String(i+1).padStart(2,'0'),prd:pageKey(spec.id),kind:'prd',group:'details',pages:[spec.id],status:'draft'}));
- return {...base,modules:[...overview,{id:'chapter-06',title:'第6章｜功能详细说明 · 总览',navNumber:'06',prd:'prd/chapter-06-overview.md',kind:'prd',group:'details',pages:[],status:'draft'},...details],pages:pages.map(p=>({...p,moduleId:'detail-'+p.id})),relations:base.relations.filter(r=>ids.includes(r.from)&&ids.includes(r.to))};
-}
 async function currentManifest(){return reviewManifest(JSON.parse(await fs.readFile(path.join(workspace,'interaction-prd.json'),'utf8')))}
 async function payload(req){let text='';for await(const chunk of req){text+=chunk;if(text.length>24*1024*1024)throw Error('Request too large')}return JSON.parse(text)}
 function json(res,value,status=200){res.writeHead(status,{'Content-Type':'application/json;charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(value))}

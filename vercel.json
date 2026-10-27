@@ -1,0 +1,54 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm ci && npm run setup",
+  "buildCommand": "npm run vercel:build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/prd.js": {
+      "maxDuration": 60,
+      "includeFiles": ".vercel-data/seed.json"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/prd?__path=/api/:path*"
+    },
+    {
+      "source": "/business-rules/:path*",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/tasks/:path*",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/upload",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/cases/:path*",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/system/:path*",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/system-settings/:path*",
+      "destination": "/prototype.html"
+    },
+    {
+      "source": "/messages",
+      "destination": "/prototype.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/prototype",
+      "destination": "/business-rules/master-data",
+      "permanent": false
+    }
+  ]
+}

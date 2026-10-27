@@ -6,11 +6,14 @@
     "node": ">=22"
   },
   "scripts": {
-    "setup": "npm --prefix prototype ci && npm --prefix interaction-prd/NeosAI-IDP-三期需求-workspace ci",
+    "setup": "npm --prefix prototype ci && npm --prefix interaction-prd/NeosAI-IDP-\u4e09\u671f\u9700\u6c42-workspace ci",
     "dev": "node scripts/dev.mjs",
     "build": "npm --prefix prototype run build && node scripts/build-prd-html.mjs",
     "test": "node --test scripts/*.test.mjs",
-    "test:browser": "node scripts/check-prd-actions.cjs && node scripts/check-prd-download.cjs && node scripts/check-master-scenarios.cjs && node scripts/check-master-sync.cjs"
+    "test:browser": "node scripts/check-prd-actions.cjs && node scripts/check-prd-download.cjs && node scripts/check-master-scenarios.cjs && node scripts/check-master-sync.cjs",
+    "vercel:build": "node scripts/build-vercel.mjs",
+    "preview:vercel": "node scripts/preview-vercel.mjs",
+    "test:vercel": "node scripts/check-vercel-output.cjs"
   },
   "devDependencies": {
     "playwright": "^1.62.1"
