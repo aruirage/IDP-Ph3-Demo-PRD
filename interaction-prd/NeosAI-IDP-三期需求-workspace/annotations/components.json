@@ -1,0 +1,30 @@
+{
+  "pageId": "components",
+  "annotations": [
+    {
+      "id": "a-components-1",
+      "number": 1,
+      "target": "h1",
+      "anchor": {
+        "x": 1,
+        "y": 0.5
+      },
+      "title": "参考展示",
+      "content": "共享视觉与状态审核页，不代表真实服务已接入。",
+      "status": "active",
+      "x": 0.2916666666666667,
+      "y": 0.08302413148636763,
+      "coordinateSpace": "document"
+    },
+    {
+      "id": "a-components-002",
+      "number": 2,
+      "coordinateSpace": "document",
+      "x": 0.3986,
+      "y": 0.1865,
+      "title": "2",
+      "content": "ddd",
+      "status": "active"
+    }
+  ]
+}

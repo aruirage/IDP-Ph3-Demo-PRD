@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "product": {
+    "name": "NeosAI IDP 三期需求",
+    "type": "Web",
+    "status": "design-review",
+    "source": {
+      "mode": "idea"
+    }
+  },
+  "modules": [
+    {
+      "id": "product-definition",
+      "title": "范围与依赖",
+      "prd": "prd/01-product-definition.md",
+      "kind": "prd",
+      "status": "approved",
+      "pages": [
+        "master-data",
+        "api-settings",
+        "doctype-rules",
+        "model-settings",
+        "ocr-confirmation"
+      ]
+    },
+    {
+      "id": "users-and-needs",
+      "title": "术语、数据与照合规则",
+      "prd": "prd/02-users-and-needs.md",
+      "kind": "prd",
+      "status": "approved",
+      "pages": [
+        "master-data",
+        "master-columns",
+        "ocr-confirmation"
+      ]
+    },
+    {
+      "id": "stories-and-journey",
+      "title": "用户流程与功能清单",
+      "prd": "prd/03-user-stories-and-journey.md",
+      "kind": "prd",
+      "status": "approved",
+      "pages": [
+        "master-data",
+        "master-sync",
+        "doctype-rules",
+        "ocr-confirmation"
+      ]
+    },
+    {
+      "id": "api-sync",
+      "title": "API设定：外部数据联动",
+      "prd": "prd/05-api-sync.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "api-settings",
+        "master-sync",
+        "master-history"
+      ]
+    },
+    {
+      "id": "master-menu",
+      "title": "主数据设定菜单",
+      "prd": "prd/04-master-menu.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "master-data",
+        "master-columns"
+      ]
+    },
+    {
+      "id": "ocr-confirm",
+      "title": "OCR抽出确认",
+      "prd": "prd/06-ocr-confirm.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "ocr-confirmation"
+      ]
+    },
+    {
+      "id": "master-capacity",
+      "title": "主数据容量",
+      "prd": "prd/07-master-capacity.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "master-data"
+      ]
+    },
+    {
+      "id": "qrcode",
+      "title": "账票类别：后处理规则",
+      "prd": "prd/08-qrcode.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "doctype-rules"
+      ]
+    },
+    {
+      "id": "model-config",
+      "title": "全局OCR模型配置",
+      "prd": "prd/09-models.md",
+      "kind": "prd",
+      "status": "draft",
+      "pages": [
+        "doctype-review",
+        "model-settings"
+      ]
+    },
+    {
+      "id": "shaping-intake",
+      "title": "输入材料",
+      "prd": "shaping/00-intake.md",
+      "kind": "shaping",
+      "navNumber": "S1",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-product",
+      "title": "产品定型",
+      "prd": "shaping/01-product-shaping.md",
+      "kind": "shaping",
+      "navNumber": "S2",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-jtbd",
+      "title": "JTBD 分析",
+      "prd": "shaping/02-jtbd.md",
+      "kind": "shaping",
+      "navNumber": "S3",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-scope",
+      "title": "MVP 范围",
+      "prd": "shaping/03-scope.md",
+      "kind": "shaping",
+      "navNumber": "S4",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-flows",
+      "title": "页面与流程",
+      "prd": "shaping/04-pages-and-flows.md",
+      "kind": "shaping",
+      "navNumber": "S5",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-questions",
+      "title": "待确认问题",
+      "prd": "shaping/05-open-questions.md",
+      "kind": "shaping",
+      "navNumber": "S6",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "shaping-brief",
+      "title": "定型摘要",
+      "prd": "shaping/06-shaped-brief.md",
+      "kind": "shaping",
+      "navNumber": "S7",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "design-system",
+      "title": "视觉设计规范",
+      "prd": "reference/DESIGN.md",
+      "kind": "reference",
+      "navNumber": "R1",
+      "status": "approved",
+      "pages": []
+    },
+    {
+      "id": "foundation",
+      "title": "组件与状态",
+      "prd": "reference/components-and-states.md",
+      "kind": "reference",
+      "navNumber": "R2",
+      "status": "draft",
+      "pages": [
+        "components",
+        "states"
+      ]
+    },
+    {
+      "id": "plan",
+      "title": "PRD 板块计划",
+      "prd": "prd/00-plan.md",
+      "kind": "process",
+      "navNumber": "00",
+      "hidden": true,
+      "status": "approved",
+      "pages": []
+    }
+  ],
+  "pages": [
+    {
+      "id": "components",
+      "title": "组件展示",
+      "moduleId": "foundation",
+      "file": "prototypes/pages/components.html",
+      "annotationFile": "annotations/components.json",
+      "kind": "component-gallery",
+      "device": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "canvas": {
+        "x": 80,
+        "y": 80
+      }
+    },
+    {
+      "id": "states",
+      "title": "状态展示",
+      "moduleId": "foundation",
+      "file": "prototypes/pages/states.html",
+      "annotationFile": "annotations/states.json",
+      "kind": "state-gallery",
+      "device": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "canvas": {
+        "x": 80,
+        "y": 480
+      }
+    },
+    {
+      "id": "master-data",
+      "title": "主数据总览",
+      "moduleId": "master-menu",
+      "file": "prototypes/pages/master-data.html",
+      "annotationFile": "annotations/master-data.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 80,
+        "y": 80
+      }
+    },
+    {
+      "id": "master-columns",
+      "title": "列设置与层级文件",
+      "moduleId": "master-menu",
+      "file": "prototypes/pages/master-columns.html",
+      "annotationFile": "annotations/master-columns.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 700,
+        "y": 80
+      }
+    },
+    {
+      "id": "master-sync",
+      "title": "API同步配置",
+      "moduleId": "api-sync",
+      "file": "prototypes/pages/master-sync.html",
+      "annotationFile": "annotations/master-sync.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 700,
+        "y": 480
+      }
+    },
+    {
+      "id": "master-history",
+      "title": "更新履历",
+      "moduleId": "api-sync",
+      "file": "prototypes/pages/master-history.html",
+      "annotationFile": "annotations/master-history.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 700,
+        "y": 880
+      }
+    },
+    {
+      "id": "api-settings",
+      "title": "外部数据连接",
+      "moduleId": "api-sync",
+      "file": "prototypes/pages/api-settings.html",
+      "annotationFile": "annotations/api-settings.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 80,
+        "y": 480
+      }
+    },
+    {
+      "id": "ocr-confirmation",
+      "title": "OCR抽出确认",
+      "moduleId": "ocr-confirm",
+      "file": "prototypes/pages/ocr-confirmation.html",
+      "annotationFile": "annotations/ocr-confirmation.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 700,
+        "y": 1280
+      }
+    },
+    {
+      "id": "doctype-rules",
+      "title": "账票后处理规则",
+      "moduleId": "qrcode",
+      "file": "prototypes/pages/doctype-rules.html",
+      "annotationFile": "annotations/doctype-rules.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 80,
+        "y": 880
+      }
+    },
+    {
+      "id": "doctype-review",
+      "title": "账票人工确认规则",
+      "moduleId": "model-config",
+      "file": "prototypes/pages/doctype-review.html",
+      "annotationFile": "annotations/doctype-review.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 700,
+        "y": 1680
+      }
+    },
+    {
+      "id": "model-settings",
+      "title": "模型用途分配",
+      "moduleId": "model-config",
+      "file": "prototypes/pages/model-settings.html",
+      "annotationFile": "annotations/model-settings.json",
+      "kind": "page",
+      "device": "desktop",
+      "viewport": {
+        "width": 1600,
+        "height": 1000
+      },
+      "canvas": {
+        "x": 80,
+        "y": 1280
+      }
+    }
+  ],
+  "relations": [
+    {
+      "id": "master-columns",
+      "from": "master-data",
+      "to": "master-columns",
+      "label": "列设置",
+      "trigger": "点击列設定"
+    },
+    {
+      "id": "master-sync",
+      "from": "master-data",
+      "to": "master-sync",
+      "label": "同步设置",
+      "trigger": "三点菜单→設定"
+    },
+    {
+      "id": "master-history",
+      "from": "master-data",
+      "to": "master-history",
+      "label": "更新履历",
+      "trigger": "三点菜单→更新履歴"
+    },
+    {
+      "id": "api-master",
+      "from": "api-settings",
+      "to": "master-sync",
+      "label": "选择已保存连接",
+      "trigger": "主数据同步配置选择连接"
+    },
+    {
+      "id": "models-review",
+      "from": "model-settings",
+      "to": "doctype-review",
+      "label": "统一模型、账票保留人工规则",
+      "trigger": "页面职责关系",
+      "labelOffset": {
+        "x": 23.5302734375,
+        "y": 14.6337890625
+      }
+    },
+    {
+      "id": "rules-ocr",
+      "from": "doctype-rules",
+      "to": "ocr-confirmation",
+      "label": "处理结果确认",
+      "trigger": "规则执行后进入确认任务"
+    },
+    {
+      "id": "master-ocr",
+      "from": "master-data",
+      "to": "ocr-confirmation",
+      "label": "正式主数据供照合",
+      "trigger": "主数据生效后"
+    }
+  ]
+}

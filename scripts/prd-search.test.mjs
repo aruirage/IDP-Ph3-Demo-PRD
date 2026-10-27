@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {searchPrd,splitPrd}from './prd-search.mjs';
+const text=fs.readFileSync(new URL('../PRD.zh-CN.md',import.meta.url),'utf8');
+test('search quotes actual source lines with deterministic ranking',()=>{const result=searchPrd(text,'自动采用阈值是多少');assert.ok(result.matches.length);assert.ok(result.matches.some(m=>m.text.includes('90%')));for(const match of result.matches){assert.equal(text.split('\n').slice(match.lineStart-1,match.lineEnd).join('\n').trim(),match.text)}assert.deepEqual(result,searchPrd(text,'自动采用阈值是多少'))});
+test('search handles no evidence, invalid query and keeps full corpus across roles',()=>{assert.equal(searchPrd(text,'zzzznonexistentfield').matches.length,0);assert.throws(()=>searchPrd(text,''));assert.ok(searchPrd(text,'自动采用阈值',{role:'frontend'}).matches.length);assert.ok(splitPrd(text).every(c=>!c.text.includes('flowchart LR')))})

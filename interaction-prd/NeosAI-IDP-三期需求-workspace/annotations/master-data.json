@@ -1,0 +1,66 @@
+{
+  "pageId": "master-data",
+  "annotations": [
+    {
+      "id": "a-master-data-1",
+      "number": 1,
+      "target": ".v-master-data__main-title",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.339375,
+      "y": 0.155796875,
+      "coordinateSpace": "document",
+      "title": "当前主数据",
+      "content": "左侧选择业务主数据，右侧沿用原有表格。客户记录上限100,000条，分类节点不计入。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-data-2",
+      "number": 2,
+      "x": 0.9146221240512333,
+      "y": 0.11617234992401215,
+      "coordinateSpace": "document",
+      "title": "启用与立即同步",
+      "content": "开关标签固定。同期使用已保存配置立即执行，不自动打开履历；三点菜单包含更新履历及设置。演示未连接真实API。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-data-3",
+      "number": 3,
+      "x": 0.40199537476280833,
+      "y": 0.1901358282674772,
+      "coordinateSpace": "document",
+      "title": "层级关系视图",
+      "content": "层级作为code属性在独立视图维护，管理员可修正层级和父级；不参与向量化。阈值已移至账票类别人工确认规则。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-data-4",
+      "number": 4,
+      "target": ".v-master-data__table-wrap",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.64625,
+      "y": 0.5543984375,
+      "coordinateSpace": "document",
+      "title": "业务主数据",
+      "content": "主数据视图只显示业务记录及向量化状态，层级修正不改变向量化状态。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-data-5",
+      "number": 5,
+      "x": 0.8669317777514232,
+      "y": 0.9541638962765957,
+      "coordinateSpace": "document",
+      "title": "关闭与再向量化",
+      "content": "关闭、再向量化顺序固定。再向量化处理业务记录，层级属性变更无需再向量化。",
+      "status": "active",
+      "size": 22
+    }
+  ]
+}

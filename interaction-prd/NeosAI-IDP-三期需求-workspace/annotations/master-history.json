@@ -1,0 +1,65 @@
+{
+  "pageId": "master-history",
+  "annotations": [
+    {
+      "id": "a-master-history-1",
+      "number": 1,
+      "target": ".el-drawer__header",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.7925,
+      "y": 0.030796875,
+      "coordinateSpace": "document",
+      "title": "右侧履历抽屉",
+      "content": "履历在右侧打开和收起，不替换主表，保留搜索、分页和编辑位置。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-history-2",
+      "number": 2,
+      "target": ".p3-history .el-table__header th:nth-child(2)",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.62625,
+      "y": 0.12159375,
+      "coordinateSpace": "document",
+      "title": "列筛选",
+      "content": "通过各列表头筛选开始日期、状态、执行方式及失败原因，支持多值和跨列联合筛选。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-history-3",
+      "number": 3,
+      "target": ".p3-history .el-table__header th:first-child",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.83,
+      "y": 0.12159375,
+      "coordinateSpace": "document",
+      "title": "开始日期筛选",
+      "content": "在开始时间列表头选择日期，支持多选和清除。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-history-4",
+      "number": 4,
+      "target": ".p3-history .el-table",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.7925,
+      "y": 0.20359375,
+      "coordinateSpace": "document",
+      "title": "执行结果与失败原因",
+      "content": "直接显示开始时间、状态、耗时、触发方式及失败原因。无展开统计，点击同步不自动打开抽屉。",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {selectPrdSources}from './prd-model-selector.mjs';
+const sources=[{text:'原文一',lineStart:1},{text:'原文二',lineStart:2}],base={url:'https://example.test/chat/completions',key:'test',model:'test'};
+test('model selects existing source IDs, source text is never generated',async()=>{const result=await selectPrdSources('问题',sources,{...base,fetchImpl:async()=>({ok:true,json:async()=>({choices:[{message:{content:'{"ids":["S2"]}'}}]})})});assert.equal(result.matches[0],sources[1]);assert.equal(result.matches[0].text,'原文二')});
+test('fabricated source or additional model answer is rejected',async()=>{for(const content of ['{"ids":["S99"]}','{"ids":["S1"],"answer":"猜测"}'])await assert.rejects(selectPrdSources('问题',sources,{...base,fetchImpl:async()=>({ok:true,json:async()=>({choices:[{message:{content}}]})})}))});
+test('missing model configuration returns extractive sources only',async()=>{const result=await selectPrdSources('问题',sources,{url:'',key:'',model:''});assert.equal(result.configured,false);assert.deepEqual(result.matches,sources)});

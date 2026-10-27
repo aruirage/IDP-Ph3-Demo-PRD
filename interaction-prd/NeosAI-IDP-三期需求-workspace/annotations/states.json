@@ -1,0 +1,20 @@
+{
+  "pageId": "states",
+  "annotations": [
+    {
+      "id": "a-states-1",
+      "number": 1,
+      "target": "h1",
+      "anchor": {
+        "x": 1,
+        "y": 0.5
+      },
+      "title": "参考展示",
+      "content": "共享视觉与状态审核页，不代表真实服务已接入。",
+      "status": "active",
+      "x": 0.23333333333333334,
+      "y": 0.0768716917752443,
+      "coordinateSpace": "document"
+    }
+  ]
+}

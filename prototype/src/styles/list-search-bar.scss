@@ -1,0 +1,57 @@
+// 列表页筛选区：无独立 label，字段名作为 placeholder，右侧图标按钮
+.v-list-search {
+  --v-list-search-field-width: 200px;
+
+  background: #f9fafb;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px var(--app-panel-padding);
+  margin-bottom: var(--app-page-gap);
+
+  &__form {
+    width: 100%;
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    flex: 0 1 auto;
+    min-width: 0;
+
+    > .el-input,
+    > .el-select,
+    > .el-date-editor {
+      width: var(--v-list-search-field-width);
+      max-width: var(--v-list-search-field-width);
+      flex-shrink: 0;
+    }
+  }
+
+  &__actions {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .el-input,
+  .el-select,
+  .el-date-editor {
+    width: var(--v-list-search-field-width);
+  }
+
+  .el-input__wrapper,
+  .el-select__wrapper {
+    background: #fff;
+  }
+}

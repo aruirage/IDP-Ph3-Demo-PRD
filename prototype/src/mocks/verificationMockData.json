@@ -1,0 +1,1958 @@
+{
+  "case_id": "CLAIM-20251024000004",
+  "case_origin": "REQ-2025-0018912",
+  "source_folder": "渡辺拓也_入院請求",
+  "policy_number": "POL-8849201",
+  "insured_name": "渡辺 拓也",
+  "completeness_requirements": [
+    {
+      "id": "cmp-req-claim",
+      "doc_type": "保険金請求書",
+      "requirement": "required",
+      "condition_description": null,
+      "present_count": 1,
+      "file_names": [
+        "20251024.pdf"
+      ],
+      "status": "present",
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-req-diagnosis",
+      "doc_type": "診断書",
+      "requirement": "required",
+      "condition_description": null,
+      "present_count": 2,
+      "file_names": [
+        "20251024_D1.pdf",
+        "20251024_D2.pdf"
+      ],
+      "status": "present",
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-req-receipt",
+      "doc_type": "領収書",
+      "requirement": "required",
+      "condition_description": null,
+      "present_count": 2,
+      "file_names": [
+        "202510241.pdf",
+        "202510242.pdf"
+      ],
+      "status": "present",
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-req-detail",
+      "doc_type": "診療明細書",
+      "requirement": "required",
+      "condition_description": null,
+      "present_count": 2,
+      "file_names": [
+        "202510243_D1.pdf",
+        "202510243_D2.pdf"
+      ],
+      "status": "present",
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-req-pharmacy",
+      "doc_type": "調剤明細書",
+      "requirement": "optional",
+      "condition_description": "調剤発生時",
+      "present_count": 2,
+      "file_names": [
+        "202510244_D2_P1.pdf",
+        "202510244_D2_P2.pdf"
+      ],
+      "status": "present",
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-req-hospital-cert",
+      "doc_type": "入院証明書",
+      "requirement": "conditional",
+      "condition_description": "入院7日超",
+      "present_count": 0,
+      "file_names": [],
+      "status": "missing",
+      "result": "REVIEW",
+      "supplement_required": false
+    }
+  ],
+  "completeness_field_requirements": [
+    {
+      "id": "cmp-fld-001",
+      "standard_field": "insured_name",
+      "display_label": "被保険者氏名",
+      "target_doc_types": [
+        "保険金請求書",
+        "診断書"
+      ],
+      "requirement": "required",
+      "condition_description": "案件種別：入院給付",
+      "status": "present",
+      "missing_doc_types": [],
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-fld-002",
+      "standard_field": "birth_date",
+      "display_label": "生年月日",
+      "target_doc_types": [
+        "保険金請求書"
+      ],
+      "requirement": "required",
+      "condition_description": "案件種別：入院給付",
+      "status": "missing",
+      "missing_doc_types": [
+        "保険金請求書"
+      ],
+      "result": "REVIEW"
+    },
+    {
+      "id": "cmp-fld-003",
+      "standard_field": "hospital_name",
+      "display_label": "医療機関名",
+      "target_doc_types": [
+        "診断書",
+        "診療明細書"
+      ],
+      "requirement": "required",
+      "condition_description": null,
+      "status": "present",
+      "missing_doc_types": [],
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-fld-004",
+      "standard_field": "hospitalization_period",
+      "display_label": "入院期間",
+      "target_doc_types": [
+        "保険金請求書",
+        "診断書"
+      ],
+      "requirement": "required",
+      "condition_description": "帳票タイプ：入院関連",
+      "status": "present",
+      "missing_doc_types": [],
+      "result": "PASS"
+    },
+    {
+      "id": "cmp-fld-005",
+      "standard_field": "discharge_date",
+      "display_label": "退院日",
+      "target_doc_types": [
+        "診断書"
+      ],
+      "requirement": "required",
+      "condition_description": "入院給付請求",
+      "status": "missing",
+      "missing_doc_types": [
+        "診断書"
+      ],
+      "result": "REVIEW"
+    },
+    {
+      "id": "cmp-fld-006",
+      "standard_field": "contact_phone",
+      "display_label": "連絡先電話番号",
+      "target_doc_types": [
+        "保険金請求書"
+      ],
+      "requirement": "required",
+      "condition_description": null,
+      "status": "missing",
+      "missing_doc_types": [
+        "保険金請求書"
+      ],
+      "result": "REVIEW"
+    },
+    {
+      "id": "cmp-fld-007",
+      "standard_field": "illness_name",
+      "display_label": "傷病名",
+      "target_doc_types": [
+        "診療明細書"
+      ],
+      "requirement": "required",
+      "condition_description": null,
+      "status": "missing",
+      "missing_doc_types": [
+        "診療明細書"
+      ],
+      "result": "REVIEW"
+    }
+  ],
+  "mapping_consistency_rules": [
+    {
+      "id": "map-ver-001",
+      "standard_field": "insured_name",
+      "display_label": "被保険者氏名",
+      "rule_description": "標準フィールドへのマッピング元間で値が一致すること（正規化照合可）",
+      "source_values": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "被保険者氏名",
+          "value": "渡辺 拓也"
+        },
+        {
+          "doc_type": "診断書",
+          "field_label": "患者氏名",
+          "value": "渡辺拓也"
+        }
+      ],
+      "result": "REVIEW",
+      "ai_result": "正規化後一致・表記差あり",
+      "mandatory": true,
+      "rule_name": "被保険者氏名整合性",
+      "applied_ocr_value": "渡辺 拓也",
+      "rule_matched": false
+    },
+    {
+      "id": "map-ver-002",
+      "standard_field": "admission_date",
+      "display_label": "入院日",
+      "rule_description": "標準フィールドへのマッピング元間で値が一致すること",
+      "source_values": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "入院日",
+          "value": "2025-09-12"
+        },
+        {
+          "doc_type": "診断書",
+          "field_label": "入院期間",
+          "value": "2025-09-12 ～ 2025-09-28"
+        }
+      ],
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "入院日整合性",
+      "applied_ocr_value": "2025-09-12",
+      "rule_matched": true
+    },
+    {
+      "id": "map-ver-003",
+      "standard_field": "hospital_name",
+      "display_label": "医療機関名",
+      "rule_description": "標準フィールドへのマッピング元間で値が一致すること",
+      "source_values": [
+        {
+          "doc_type": "診断書",
+          "field_label": "医療機関名",
+          "value": "慶應大学病院"
+        },
+        {
+          "doc_type": "診療明細書",
+          "field_label": "医療機関名",
+          "value": "慶應義塾大学病院"
+        }
+      ],
+      "result": "REVIEW",
+      "ai_result": "不一致",
+      "mandatory": true,
+      "rule_name": "医療機関名整合性",
+      "applied_ocr_value": "慶應大学病院",
+      "rule_matched": false
+    }
+  ],
+  "master_verification_rules": [
+    {
+      "id": "mst-001",
+      "target_doc_type": "診断書",
+      "target_field_label": "傷病名",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-diagnosis",
+      "rule_description": "傷病名マスタ照合",
+      "master_source": "傷病名マスタ",
+      "extracted_value": "虫垂炎（急性）",
+      "selected_master_id": "mst-001-c1",
+      "master_candidates": [
+        {
+          "id": "mst-001-c1",
+          "match_method": "similarity",
+          "display_text": "急性虫垂炎-K35.80",
+          "similarity_score": 96
+        },
+        {
+          "id": "mst-001-c2",
+          "match_method": "similarity",
+          "display_text": "急性胃炎-K29.10",
+          "similarity_score": 84
+        },
+        {
+          "id": "mst-001-c3",
+          "match_method": "similarity",
+          "display_text": "慢性虫垂炎-K36.1",
+          "similarity_score": 71
+        }
+      ],
+      "result": "REVIEW",
+      "ai_result": "急性虫垂炎",
+      "mandatory": true,
+      "review_reasons": [
+        "low-llm-confidence"
+      ],
+      "llm_review_confidence": 72,
+      "rule_name": "傷病名マスタ照合",
+      "applied_ocr_value": "虫垂炎（急性）",
+      "rule_matched": false
+    },
+    {
+      "id": "mst-002",
+      "target_doc_type": "診断書",
+      "target_field_label": "手術名",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-surgery-kcode",
+      "rule_description": "診療行為マスタ照合",
+      "master_source": "診療行為マスタ",
+      "extracted_value": "k637",
+      "selected_master_id": "mst-002-c1",
+      "master_candidates": [
+        {
+          "id": "mst-002-c1",
+          "match_method": "similarity",
+          "display_text": "腹腔鏡下虫垂切除術-K637",
+          "similarity_score": 98
+        },
+        {
+          "id": "mst-002-c2",
+          "match_method": "similarity",
+          "display_text": "虫垂切除術-K633",
+          "similarity_score": 86
+        },
+        {
+          "id": "mst-002-c3",
+          "match_method": "similarity",
+          "display_text": "開腹虫垂切除術-K631",
+          "similarity_score": 74
+        }
+      ],
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "手術名マスタ照合",
+      "applied_ocr_value": "k637",
+      "rule_matched": true
+    },
+    {
+      "id": "mst-003",
+      "target_doc_type": "診断書",
+      "target_field_label": "手術名（補助）",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-surgery-kcode",
+      "rule_description": "診療行為マスタ照合",
+      "master_source": "診療行為マスタ",
+      "extracted_value": "腹腔鏡虫垂",
+      "selected_master_id": "mst-003-c1",
+      "master_candidates": [
+        {
+          "id": "mst-003-c1",
+          "match_method": "similarity",
+          "display_text": "腹腔鏡下虫垂切除術-K637",
+          "similarity_score": 95
+        },
+        {
+          "id": "mst-003-c2",
+          "match_method": "similarity",
+          "display_text": "虫垂切除術-K633",
+          "similarity_score": 82
+        },
+        {
+          "id": "mst-003-c3",
+          "match_method": "similarity",
+          "display_text": "腹腔鏡下虫垂切除術（単孔）-K6371",
+          "similarity_score": 68
+        }
+      ],
+      "result": "REVIEW",
+      "ai_result": "腹腔鏡下虫垂切除術",
+      "mandatory": true,
+      "review_reasons": [
+        "low-similarity"
+      ],
+      "rule_name": "手術名マスタ照合",
+      "applied_ocr_value": "腹腔鏡虫垂",
+      "rule_matched": false
+    },
+    {
+      "id": "mst-004",
+      "target_doc_type": "調剤明細書",
+      "target_field_label": "薬品名①",
+      "target_file_id": "doc-pharmacy-001",
+      "target_field_id": "f-drug-name",
+      "rule_description": "抗がん剤判定マスタ照合",
+      "master_source": "抗がん剤判定マスタ",
+      "extracted_value": "パクリタキセル注 100mg",
+      "selected_master_id": "mst-004-c1",
+      "master_candidates": [
+        {
+          "id": "mst-004-c1",
+          "match_method": "similarity",
+          "display_text": "パクリタキセル注 100mg-620004602",
+          "similarity_score": 97
+        },
+        {
+          "id": "mst-004-c2",
+          "match_method": "similarity",
+          "display_text": "パクリタキセル注射液 100mg-620004601",
+          "similarity_score": 88
+        },
+        {
+          "id": "mst-004-c3",
+          "match_method": "similarity",
+          "display_text": "パクリタキセル注 30mg-620004600",
+          "similarity_score": 72
+        }
+      ],
+      "result": "REVIEW",
+      "ai_result": "該当",
+      "mandatory": true,
+      "master_value": "",
+      "review_reasons": [
+        "empty-master-value"
+      ],
+      "rule_name": "抗がん剤判定マスタ照合",
+      "applied_ocr_value": "パクリタキセル注 100mg",
+      "rule_matched": false
+    },
+    {
+      "id": "mst-005",
+      "target_doc_type": "調剤明細書",
+      "target_field_label": "薬品名②",
+      "target_file_id": "doc-pharmacy-001",
+      "target_field_id": "f-drug-name-2",
+      "rule_description": "抗がん剤判定マスタ照合",
+      "master_source": "抗がん剤判定マスタ",
+      "extracted_value": "ロキソニン錠60mg",
+      "selected_master_id": "mst-005-c1",
+      "master_candidates": [
+        {
+          "id": "mst-005-c1",
+          "match_method": "similarity",
+          "display_text": "ロキソニン錠60mg-620007776",
+          "similarity_score": 99
+        },
+        {
+          "id": "mst-005-c2",
+          "match_method": "similarity",
+          "display_text": "ロキソニン錠 60mg-620007775",
+          "similarity_score": 91
+        },
+        {
+          "id": "mst-005-c3",
+          "match_method": "similarity",
+          "display_text": "ロキソプロフェンNa錠60mg-620007770",
+          "similarity_score": 76
+        }
+      ],
+      "result": "PASS",
+      "ai_result": "非該当",
+      "mandatory": false,
+      "rule_name": "抗がん剤判定マスタ照合",
+      "applied_ocr_value": "ロキソニン錠60mg",
+      "rule_matched": true
+    }
+  ],
+  "text_verification_rules": [
+    {
+      "id": "txt-001",
+      "scene": "date_format",
+      "rule_type": "natural_language",
+      "target_doc_type": "保険金請求書",
+      "target_field_label": "入院日",
+      "target_file_id": "doc-claim-001",
+      "target_field_id": "f-admission-date",
+      "rule_description": "日付は西暦 YYYY-MM-DD 形式で統一出力すること",
+      "extracted_value": "2025/09/12",
+      "reference_values": [
+        "期待：2025-09-12"
+      ],
+      "result": "REVIEW",
+      "ai_result": "形式不一致",
+      "judgment_explanation": "日付形式が YYYY-MM-DD ではありません",
+      "mandatory": true,
+      "rule_name": "日付フィールド形式検証",
+      "applied_ocr_value": "2025/09/12",
+      "rule_matched": false
+    },
+    {
+      "id": "txt-002",
+      "scene": "amount_format",
+      "rule_type": "natural_language",
+      "target_doc_type": "領収書",
+      "target_field_label": "自己負担額",
+      "target_file_id": "doc-receipt-002",
+      "target_field_id": "f-copay-amount-2",
+      "rule_description": "金額フィールドは数値のみ。スペース・説明文を含まないこと",
+      "extracted_value": "220 ",
+      "reference_values": [
+        "期待：220"
+      ],
+      "result": "REVIEW",
+      "ai_result": "余分な文字含有",
+      "judgment_explanation": "金額フィールドに余分なスペースが含まれています",
+      "mandatory": true,
+      "rule_name": "金額フィールド形式検証",
+      "applied_ocr_value": "220 ",
+      "rule_matched": false
+    },
+    {
+      "id": "txt-003",
+      "scene": "number_format",
+      "rule_type": "natural_language",
+      "target_doc_type": "保険金請求書",
+      "target_field_label": "証券番号",
+      "target_file_id": "doc-claim-001",
+      "target_field_id": "f-policy-number",
+      "rule_description": "桁数・文字種・ハイフン位置がユーザー定義ルールに適合すること",
+      "extracted_value": "POL8849201",
+      "reference_values": [
+        "形式 POL-#######"
+      ],
+      "result": "REVIEW",
+      "ai_result": "形式不一致",
+      "judgment_explanation": "証券番号のハイフン位置がルールと一致しません",
+      "mandatory": true,
+      "rule_name": "番号形式検証",
+      "applied_ocr_value": "POL8849201",
+      "rule_matched": false
+    },
+    {
+      "id": "txt-004",
+      "scene": "char_type",
+      "rule_type": "natural_language",
+      "target_doc_type": "診断書",
+      "target_field_label": "担当医師氏名",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-doctor-name",
+      "rule_description": "氏名は全角文字のみで出力すること",
+      "extracted_value": "山田 ｲﾁﾛｳ",
+      "reference_values": [
+        "全角漢字・かな"
+      ],
+      "result": "REVIEW",
+      "ai_result": "文字種不一致",
+      "judgment_explanation": "氏名に半角カナが含まれています",
+      "mandatory": false,
+      "rule_name": "文字種別検証",
+      "applied_ocr_value": "山田 ｲﾁﾛｳ",
+      "rule_matched": false
+    },
+    {
+      "id": "txt-007",
+      "scene": "char_type",
+      "rule_type": "natural_language",
+      "target_doc_type": "診断書",
+      "target_field_label": "手術名",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-surgery-kcode",
+      "rule_description": "Kコードは大文字英字で始まること",
+      "extracted_value": "k637",
+      "reference_values": [
+        "期待：K637"
+      ],
+      "result": "REVIEW",
+      "ai_result": "文字種不一致",
+      "judgment_explanation": "Kコードが小文字で出力されています",
+      "mandatory": false,
+      "rule_name": "Kコード形式検証",
+      "applied_ocr_value": "k637",
+      "rule_matched": false
+    }
+  ],
+  "data_verification_rules": [
+    {
+      "id": "dat-001",
+      "scene": "hospitalization_days",
+      "standard_field": "admission_days",
+      "display_label": "入院日数",
+      "target_doc_type": "保険金請求書",
+      "target_field_label": "入院日数",
+      "target_file_id": "doc-claim-001",
+      "target_field_id": "f-admission-days",
+      "rule_description": "{{保険金請求書.入院日数}} = {{保険金請求書.退院日}} − {{保険金請求書.入院日}} + 1",
+      "extracted_value": "17日",
+      "data_equation": {
+        "formula_text": "{{保険金請求書.入院日数}} = {{保険金請求書.退院日}} − {{保険金請求書.入院日}} + 1",
+        "left_label": "保険金請求書.入院日数",
+        "left_value": "17日",
+        "operator": "=",
+        "right_label": "計算値",
+        "right_value": "17日",
+        "calculated_value": "17日",
+        "operands": [
+          {
+            "role": "factor",
+            "display_label": "保険金請求書.退院日",
+            "value": "2025-09-28",
+            "doc_type": "保険金請求書",
+            "field_label": "退院日",
+            "target_file_id": "doc-claim-001",
+            "target_field_id": "f-discharge-date"
+          },
+          {
+            "role": "factor",
+            "display_label": "−",
+            "value": "",
+            "operator_text": "−"
+          },
+          {
+            "role": "factor",
+            "display_label": "保険金請求書.入院日",
+            "value": "2025-09-12",
+            "doc_type": "保険金請求書",
+            "field_label": "入院日",
+            "target_file_id": "doc-claim-001",
+            "target_field_id": "f-admission-date"
+          },
+          {
+            "role": "factor",
+            "display_label": "+ 1",
+            "value": "",
+            "operator_text": "+ 1"
+          }
+        ]
+      },
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "入院日数検証",
+      "applied_ocr_value": "17日",
+      "rule_matched": true
+    },
+    {
+      "id": "dat-002",
+      "scene": "billing_amount",
+      "target_doc_type": "調剤明細書",
+      "target_field_label": "点数",
+      "target_file_id": "doc-pharmacy-001",
+      "target_field_id": "f-pharmacy-points-col",
+      "rule_description": "{{領収書.保険点数合計}} = SUM({{調剤明細書.点数}})",
+      "extracted_value": "124",
+      "data_equation": {
+        "formula_text": "{{領収書.保険点数合計}} = SUM({{調剤明細書.点数}})",
+        "left_label": "調剤明細書1.点数 列合計",
+        "left_value": "124",
+        "operator": "=",
+        "right_label": "領収書1.保険点数合計",
+        "right_value": "124",
+        "operands": [
+          {
+            "role": "breakdown",
+            "display_label": "調剤明細書1.点数[行1]",
+            "value": "42",
+            "doc_type": "調剤明細書",
+            "field_label": "点数",
+            "target_file_id": "doc-pharmacy-001",
+            "target_field_id": "f-pharmacy-points-row-1"
+          },
+          {
+            "role": "breakdown",
+            "display_label": "調剤明細書1.点数[行2]",
+            "value": "82",
+            "doc_type": "調剤明細書",
+            "field_label": "点数",
+            "target_file_id": "doc-pharmacy-001",
+            "target_field_id": "f-pharmacy-points-row-2"
+          },
+          {
+            "role": "aggregate",
+            "display_label": "列合計",
+            "value": "124"
+          },
+          {
+            "role": "target",
+            "display_label": "領収書1.保険点数合計",
+            "value": "124",
+            "doc_type": "領収書",
+            "field_label": "保険点数合計",
+            "target_file_id": "doc-receipt-001",
+            "target_field_id": "f-insurance-points"
+          }
+        ]
+      },
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "調剤点数・領収保険点数照合",
+      "applied_ocr_value": "124",
+      "rule_matched": true
+    },
+    {
+      "id": "dat-003",
+      "scene": "billing_amount",
+      "target_doc_type": "領収書",
+      "target_field_label": "請求金額",
+      "target_file_id": "doc-receipt-001",
+      "target_field_id": "f-request-amount",
+      "rule_description": "{{領収書.請求金額}} = {{領収書.保険点数合計}} × 10 × {{領収書.負担割合}}",
+      "extracted_value": "372",
+      "data_equation": {
+        "formula_text": "{{領収書.請求金額}} = {{領収書.保険点数合計}} × 10 × {{領収書.負担割合}}",
+        "left_label": "領収書1.請求金額",
+        "left_value": "372",
+        "operator": "=",
+        "right_label": "計算値",
+        "right_value": "372",
+        "calculated_value": "372",
+        "operands": [
+          {
+            "role": "factor",
+            "display_label": "領収書1.保険点数合計",
+            "value": "124",
+            "doc_type": "領収書",
+            "field_label": "保険点数合計",
+            "target_file_id": "doc-receipt-001",
+            "target_field_id": "f-insurance-points"
+          },
+          {
+            "role": "factor",
+            "display_label": "× 10",
+            "value": "",
+            "operator_text": "× 10"
+          },
+          {
+            "role": "factor",
+            "display_label": "領収書1.負担割合",
+            "value": "30%",
+            "doc_type": "領収書",
+            "field_label": "負担割合",
+            "target_file_id": "doc-receipt-001",
+            "target_field_id": "f-burden-ratio"
+          }
+        ]
+      },
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "領収請求金額検証",
+      "applied_ocr_value": "372",
+      "rule_matched": true
+    },
+    {
+      "id": "dat-004",
+      "scene": "billing_amount",
+      "target_doc_type": "調剤明細書",
+      "target_field_label": "点数",
+      "target_file_id": "doc-pharmacy-002",
+      "target_field_id": "f-pharmacy-points-row-1-p2",
+      "rule_description": "{{領収書.保険点数合計}} = SUM({{調剤明細書.点数}})",
+      "extracted_value": "68",
+      "data_equation": {
+        "formula_text": "{{領収書.保険点数合計}} = SUM({{調剤明細書.点数}})",
+        "left_label": "調剤明細書2.点数 列合計",
+        "left_value": "68",
+        "operator": "=",
+        "right_label": "領収書2.保険点数合計",
+        "right_value": "68",
+        "operands": [
+          {
+            "role": "breakdown",
+            "display_label": "調剤明細書2.点数[行1]",
+            "value": "42",
+            "doc_type": "調剤明細書",
+            "field_label": "点数",
+            "target_file_id": "doc-pharmacy-002",
+            "target_field_id": "f-pharmacy-points-row-1-p2"
+          },
+          {
+            "role": "breakdown",
+            "display_label": "調剤明細書2.点数[行2]",
+            "value": "26",
+            "doc_type": "調剤明細書",
+            "field_label": "点数",
+            "target_file_id": "doc-pharmacy-002",
+            "target_field_id": "f-pharmacy-points-row-2-p2"
+          },
+          {
+            "role": "aggregate",
+            "display_label": "列合計",
+            "value": "68"
+          },
+          {
+            "role": "target",
+            "display_label": "領収書2.保険点数合計",
+            "value": "68",
+            "doc_type": "領収書",
+            "field_label": "保険点数合計",
+            "target_file_id": "doc-receipt-002",
+            "target_field_id": "f-insurance-points-2"
+          }
+        ]
+      },
+      "result": "PASS",
+      "ai_result": "一致",
+      "mandatory": true,
+      "rule_name": "調剤点数・領収保険点数照合",
+      "applied_ocr_value": "68",
+      "rule_matched": true
+    },
+    {
+      "id": "dat-005",
+      "scene": "billing_amount",
+      "target_doc_type": "領収書",
+      "target_field_label": "請求金額",
+      "target_file_id": "doc-receipt-002",
+      "target_field_id": "f-request-amount-2",
+      "rule_description": "{{領収書.請求金額}} = {{領収書.保険点数合計}} × 10 × {{領収書.負担割合}}",
+      "extracted_value": "220",
+      "data_equation": {
+        "formula_text": "{{領収書.請求金額}} = {{領収書.保険点数合計}} × 10 × {{領収書.負担割合}}",
+        "left_label": "領収書2.請求金額",
+        "left_value": "220",
+        "operator": "≠",
+        "right_label": "計算値",
+        "right_value": "204",
+        "calculated_value": "204",
+        "operands": [
+          {
+            "role": "factor",
+            "display_label": "領収書2.保険点数合計",
+            "value": "68",
+            "doc_type": "領収書",
+            "field_label": "保険点数合計",
+            "target_file_id": "doc-receipt-002",
+            "target_field_id": "f-insurance-points-2"
+          },
+          {
+            "role": "factor",
+            "display_label": "× 10",
+            "value": "",
+            "operator_text": "× 10"
+          },
+          {
+            "role": "factor",
+            "display_label": "領収書2.負担割合",
+            "value": "30%",
+            "doc_type": "領収書",
+            "field_label": "負担割合",
+            "target_file_id": "doc-receipt-002",
+            "target_field_id": "f-burden-ratio-2"
+          }
+        ]
+      },
+      "result": "REVIEW",
+      "ai_result": "差異 16",
+      "judgment_explanation": "請求金額と計算結果の差異が 16 あります",
+      "mandatory": true,
+      "rule_name": "領収請求金額検証",
+      "applied_ocr_value": "220",
+      "rule_matched": false
+    },
+    {
+      "id": "dat-006",
+      "scene": "treatment_period",
+      "target_doc_type": "診断書",
+      "target_field_label": "入院期間",
+      "target_file_id": "doc-diagnosis-001",
+      "target_field_id": "f-hospitalization",
+      "rule_description": "{{診断書.退院日}} ≥ {{診断書.入院日}}",
+      "extracted_value": "2025-09-12 ～ 2025-09-28",
+      "data_equation": {
+        "formula_text": "{{診断書.退院日}} ≥ {{診断書.入院日}}",
+        "left_label": "診断書1.入院期間",
+        "left_value": "2025-09-12 ～ 2025-09-28",
+        "operator": "⊂",
+        "right_label": "手術日",
+        "right_value": "2025-09-14",
+        "operands": [
+          {
+            "role": "target",
+            "display_label": "診断書1.入院期間",
+            "value": "2025-09-12 ～ 2025-09-28",
+            "doc_type": "診断書",
+            "field_label": "入院期間",
+            "target_file_id": "doc-diagnosis-001",
+            "target_field_id": "f-hospitalization"
+          },
+          {
+            "role": "factor",
+            "display_label": "手術日",
+            "value": "2025-09-14"
+          }
+        ]
+      },
+      "result": "PASS",
+      "ai_result": "妥当",
+      "mandatory": true,
+      "rule_name": "治療期間妥当性検証",
+      "applied_ocr_value": "2025-09-12 ～ 2025-09-28",
+      "rule_matched": true
+    }
+  ],
+  "seal_signature_verification": [
+    {
+      "id": "seal-001",
+      "scene": "signature_consistency",
+      "target_doc_type": "保険金請求書",
+      "target_file_id": "doc-claim-001",
+      "detection_target": "signature",
+      "detection_label": "被保険者署名",
+      "rule_description": "指定領域内に署名が存在し、帳票上の被保険者氏名と一致すること",
+      "similarity_threshold": 85,
+      "required_content": [
+        "被保険者署名"
+      ],
+      "compare_targets": [
+        {
+          "type": "doc_field",
+          "doc_type": "保険金請求書",
+          "field_label": "被保険者氏名",
+          "target_file_id": "doc-claim-001",
+          "target_field_id": "f-insured-name",
+          "expected_value": "渡辺 拓也"
+        }
+      ],
+      "extracted_value": "渡 也",
+      "result": "REVIEW",
+      "ai_result": "不一致",
+      "mandatory": true,
+      "supplement_required": true,
+      "bbox": {
+        "top": 82,
+        "left": 62,
+        "width": 18,
+        "height": 6
+      },
+      "rule_name": "被保険者署名一致検証",
+      "applied_ocr_value": "渡 也",
+      "rule_matched": false
+    },
+    {
+      "id": "seal-002",
+      "scene": "seal_presence",
+      "target_doc_type": "診断書",
+      "target_file_id": "doc-diagnosis-001",
+      "detection_target": "seal",
+      "detection_label": "医師捺印",
+      "rule_description": "指定領域内に医師捺印が存在すること",
+      "similarity_threshold": 85,
+      "required_content": [
+        "医師捺印"
+      ],
+      "extracted_value": "",
+      "result": "REVIEW",
+      "ai_result": "未検出",
+      "mandatory": true,
+      "bbox": {
+        "top": 78,
+        "left": 55,
+        "width": 12,
+        "height": 8
+      },
+      "rule_name": "医師捺印存在検証",
+      "applied_ocr_value": "",
+      "rule_matched": false
+    }
+  ],
+  "standard_field_values": [
+    {
+      "id": "std-001",
+      "standard_field": "insured_name",
+      "display_label": "被保険者氏名",
+      "value": "渡辺 拓也",
+      "resolved_value": "渡辺 拓也",
+      "sources": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "被保険者氏名",
+          "value": "渡辺 拓也"
+        },
+        {
+          "doc_type": "診断書",
+          "field_label": "患者氏名",
+          "value": "渡辺拓也"
+        }
+      ]
+    },
+    {
+      "id": "std-002",
+      "standard_field": "policy_number",
+      "display_label": "証券番号",
+      "value": "POL-8849201",
+      "resolved_value": "POL-8849201",
+      "sources": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "証券番号",
+          "value": "POL-8849201"
+        }
+      ]
+    },
+    {
+      "id": "std-003",
+      "standard_field": "admission_date",
+      "display_label": "入院日",
+      "value": "2025-09-12",
+      "resolved_value": "2025-09-12",
+      "sources": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "入院日",
+          "value": "2025-09-12"
+        },
+        {
+          "doc_type": "診断書",
+          "field_label": "入院期間",
+          "value": "2025-09-12 ～ 2025-09-28"
+        }
+      ]
+    },
+    {
+      "id": "std-004",
+      "standard_field": "discharge_date",
+      "display_label": "退院日",
+      "value": "2025-09-28",
+      "resolved_value": "2025-09-28",
+      "sources": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "退院日",
+          "value": "2025-09-28"
+        },
+        {
+          "doc_type": "診断書",
+          "field_label": "入院期間",
+          "value": "2025-09-12 ～ 2025-09-28"
+        }
+      ]
+    },
+    {
+      "id": "std-005",
+      "standard_field": "admission_days",
+      "display_label": "入院日数",
+      "value": "17日",
+      "resolved_value": "17日",
+      "sources": [
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "入院日数",
+          "value": "17日"
+        }
+      ]
+    },
+    {
+      "id": "std-006",
+      "standard_field": "hospital_name",
+      "display_label": "医療機関名",
+      "value": "慶應大学病院",
+      "resolved_value": "慶應大学病院",
+      "sources": [
+        {
+          "doc_type": "診断書",
+          "field_label": "医療機関名",
+          "value": "慶應大学病院"
+        },
+        {
+          "doc_type": "診療明細書",
+          "field_label": "医療機関名",
+          "value": "慶應義塾大学病院"
+        }
+      ]
+    },
+    {
+      "id": "std-007",
+      "standard_field": "disease_name",
+      "display_label": "傷病名",
+      "value": "虫垂炎（急性）",
+      "resolved_value": "虫垂炎（急性）",
+      "sources": [
+        {
+          "doc_type": "診断書",
+          "field_label": "傷病名",
+          "value": "虫垂炎（急性）"
+        },
+        {
+          "doc_type": "保険金請求書",
+          "field_label": "事故・傷病名",
+          "value": "急性虫垂炎"
+        }
+      ]
+    },
+    {
+      "id": "std-008",
+      "standard_field": "total_points",
+      "display_label": "合計点数",
+      "value": "1,285",
+      "resolved_value": "1,285",
+      "sources": [
+        {
+          "doc_type": "診療明細書",
+          "field_label": "合計点数",
+          "value": "1,285"
+        }
+      ]
+    },
+    {
+      "id": "std-009",
+      "standard_field": "copay_amount",
+      "display_label": "自己負担額",
+      "value": "3,860",
+      "resolved_value": "3,860",
+      "sources": [
+        {
+          "doc_type": "領収書",
+          "field_label": "自己負担額",
+          "value": "3,860"
+        }
+      ]
+    },
+    {
+      "id": "std-010",
+      "standard_field": "pharmacy_total",
+      "display_label": "調剤合計",
+      "value": "1,250",
+      "resolved_value": "1,250",
+      "sources": [
+        {
+          "doc_type": "調剤明細書",
+          "field_label": "調剤合計",
+          "value": "1,250"
+        }
+      ]
+    }
+  ],
+  "extraction_documents": [
+    {
+      "id": "doc-claim-001",
+      "doc_type": "保険金請求書",
+      "file_name": "20251024.pdf",
+      "display_name": "20251024",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-insured-name",
+          "section": "被保険者情報",
+          "label": "被保険者氏名",
+          "value": "渡辺 拓也",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 29.2,
+            "left": 38.5,
+            "width": 18.5,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-illness",
+          "section": "請求内容",
+          "label": "事故・傷病名",
+          "value": "急性虫垂炎",
+          "confidence": 91,
+          "required": true,
+          "bbox": {
+            "top": 52.4,
+            "left": 38.5,
+            "width": 22.5,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-admission-date",
+          "section": "請求内容",
+          "label": "入院日",
+          "value": "2025-09-12",
+          "confidence": 96,
+          "required": true,
+          "bbox": {
+            "top": 59.6,
+            "left": 38.5,
+            "width": 13.5,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-discharge-date",
+          "section": "請求内容",
+          "label": "退院日",
+          "value": "2025-09-28",
+          "confidence": 95,
+          "required": true,
+          "bbox": {
+            "top": 63.2,
+            "left": 38.5,
+            "width": 13.5,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-admission-days",
+          "section": "請求内容",
+          "label": "入院日数",
+          "value": "17日",
+          "confidence": 93,
+          "required": true,
+          "bbox": {
+            "top": 66.8,
+            "left": 38.5,
+            "width": 10.5,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-policy-number",
+          "section": "被保険者情報",
+          "label": "証券番号",
+          "value": "POL-8849201",
+          "confidence": 97,
+          "required": true,
+          "bbox": {
+            "top": 25,
+            "left": 38.5,
+            "width": 16,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-claim-amount",
+          "section": "請求内容",
+          "label": "請求金額",
+          "value": "3,860",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 70.4,
+            "left": 38.5,
+            "width": 16,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-diagnosis-001",
+      "doc_type": "診断書",
+      "file_name": "20251024_D1.pdf",
+      "display_name": "20251024_D1",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-patient-name",
+          "section": "患者情報",
+          "label": "患者氏名",
+          "value": "渡辺拓也",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 22,
+            "left": 35,
+            "width": 20,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-hospital-name",
+          "section": "医療機関",
+          "label": "医療機関名",
+          "value": "慶應大学病院",
+          "confidence": 78,
+          "required": true,
+          "bbox": {
+            "top": 18,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-diagnosis",
+          "section": "診断内容",
+          "label": "傷病名",
+          "value": "虫垂炎（急性）",
+          "confidence": 85,
+          "required": true,
+          "bbox": {
+            "top": 45,
+            "left": 35,
+            "width": 25,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-surgery-kcode",
+          "section": "診断内容",
+          "label": "手術名",
+          "value": "k637",
+          "confidence": 72,
+          "required": true,
+          "bbox": {
+            "top": 49,
+            "left": 35,
+            "width": 22,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-hospitalization",
+          "section": "診断内容",
+          "label": "入院期間",
+          "value": "2025-09-12 ～ 2025-09-28",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 56,
+            "left": 35,
+            "width": 30,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-doctor-name",
+          "section": "医療機関",
+          "label": "担当医師氏名",
+          "value": "山田 一郎",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 72,
+            "left": 35,
+            "width": 22,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-diagnosis-002",
+      "doc_type": "診断書",
+      "file_name": "20251024_D2.pdf",
+      "display_name": "20251024_D2",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-patient-name-2",
+          "section": "患者情報",
+          "label": "患者氏名",
+          "value": "渡辺拓也",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 22,
+            "left": 35,
+            "width": 20,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-hospital-name-2",
+          "section": "医療機関",
+          "label": "医療機関名",
+          "value": "慶應大学病院",
+          "confidence": 82,
+          "required": true,
+          "bbox": {
+            "top": 18,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-diagnosis-2",
+          "section": "診断内容",
+          "label": "傷病名",
+          "value": "術後経過観察",
+          "confidence": 88,
+          "required": true,
+          "bbox": {
+            "top": 45,
+            "left": 35,
+            "width": 25,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-hospitalization-2",
+          "section": "診断内容",
+          "label": "入院期間",
+          "value": "2025-09-12 ～ 2025-09-28",
+          "confidence": 91,
+          "required": true,
+          "bbox": {
+            "top": 56,
+            "left": 35,
+            "width": 30,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-doctor-name-2",
+          "section": "医療機関",
+          "label": "担当医師氏名",
+          "value": "佐藤 健",
+          "confidence": 87,
+          "required": true,
+          "bbox": {
+            "top": 72,
+            "left": 35,
+            "width": 22,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-receipt-001",
+      "doc_type": "領収書",
+      "file_name": "202510241.pdf",
+      "display_name": "202510241",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-receipt-hospital-name",
+          "section": "領収情報",
+          "label": "医療機関名",
+          "value": "さくら薬局",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 8,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-receipt-issue-date",
+          "section": "領収情報",
+          "label": "発行日",
+          "value": "2025-09-28",
+          "confidence": 95,
+          "required": true,
+          "bbox": {
+            "top": 12,
+            "left": 60,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-insurance-points",
+          "section": "点数",
+          "label": "保険点数合計",
+          "value": "124",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 32,
+            "left": 55,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-burden-ratio",
+          "section": "負担額",
+          "label": "負担割合",
+          "value": "30%",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 36,
+            "left": 55,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-request-amount",
+          "section": "領収情報",
+          "label": "請求金額",
+          "value": "372",
+          "confidence": 93,
+          "required": true,
+          "bbox": {
+            "top": 40,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-receipt-total",
+          "section": "領収情報",
+          "label": "領収合計",
+          "value": "372",
+          "confidence": 93,
+          "required": true,
+          "bbox": {
+            "top": 38,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-copay-amount",
+          "section": "負担額",
+          "label": "自己負担額",
+          "value": "372",
+          "confidence": 91,
+          "required": true,
+          "bbox": {
+            "top": 42,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-receipt-patient-name",
+          "section": "領収情報",
+          "label": "患者氏名",
+          "value": "",
+          "confidence": 0,
+          "required": false,
+          "bbox": {
+            "top": 20,
+            "left": 35,
+            "width": 20,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-receipt-002",
+      "doc_type": "領収書",
+      "file_name": "202510242.pdf",
+      "display_name": "202510242",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-receipt-hospital-name-2",
+          "section": "領収情報",
+          "label": "医療機関名",
+          "value": "中央薬局",
+          "confidence": 89,
+          "required": true,
+          "bbox": {
+            "top": 8,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-receipt-issue-date-2",
+          "section": "領収情報",
+          "label": "発行日",
+          "value": "2025-10-05",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 12,
+            "left": 60,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-insurance-points-2",
+          "section": "点数",
+          "label": "保険点数合計",
+          "value": "68",
+          "confidence": 93,
+          "required": true,
+          "bbox": {
+            "top": 32,
+            "left": 55,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-burden-ratio-2",
+          "section": "負担額",
+          "label": "負担割合",
+          "value": "30%",
+          "confidence": 91,
+          "required": true,
+          "bbox": {
+            "top": 36,
+            "left": 55,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-request-amount-2",
+          "section": "領収情報",
+          "label": "請求金額",
+          "value": "220",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 40,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-receipt-total-2",
+          "section": "領収情報",
+          "label": "領収合計",
+          "value": "220",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 38,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-copay-amount-2",
+          "section": "負担額",
+          "label": "自己負担額",
+          "value": "220",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 42,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-detail-001",
+      "doc_type": "診療明細書",
+      "file_name": "202510243_D1.pdf",
+      "display_name": "202510243_D1",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-hospital-name",
+          "section": "領収情報",
+          "label": "医療機関名",
+          "value": "慶應義塾大学病院",
+          "confidence": 88,
+          "required": true,
+          "bbox": {
+            "top": 8,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-issue-date",
+          "section": "領収情報",
+          "label": "発行日",
+          "value": "2025-09-28",
+          "confidence": 95,
+          "required": true,
+          "bbox": {
+            "top": 12,
+            "left": 60,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-total-points",
+          "section": "点数",
+          "label": "合計点数",
+          "value": "1,285",
+          "confidence": 96,
+          "required": true,
+          "bbox": {
+            "top": 35,
+            "left": 55,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-detail-total",
+          "section": "明細",
+          "label": "診療明細合計",
+          "value": "3,855",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 48,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-line-items",
+          "section": "明細",
+          "label": "内訳",
+          "value": "88+412+156+629",
+          "confidence": 88,
+          "required": false,
+          "bbox": {
+            "top": 28,
+            "left": 35,
+            "width": 40,
+            "height": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-detail-002",
+      "doc_type": "診療明細書",
+      "file_name": "202510243_D2.pdf",
+      "display_name": "202510243_D2",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-hospital-name-d2",
+          "section": "明細",
+          "label": "医療機関名",
+          "value": "慶應義塾大学病院",
+          "confidence": 86,
+          "required": true,
+          "bbox": {
+            "top": 8,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-issue-date-d2",
+          "section": "明細",
+          "label": "発行日",
+          "value": "2025-10-05",
+          "confidence": 93,
+          "required": true,
+          "bbox": {
+            "top": 12,
+            "left": 60,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-total-points-d2",
+          "section": "点数",
+          "label": "合計点数",
+          "value": "428",
+          "confidence": 94,
+          "required": true,
+          "bbox": {
+            "top": 35,
+            "left": 55,
+            "width": 15,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-line-items-d2",
+          "section": "明細",
+          "label": "内訳",
+          "value": "156+272",
+          "confidence": 87,
+          "required": false,
+          "bbox": {
+            "top": 28,
+            "left": 35,
+            "width": 40,
+            "height": 4
+          }
+        },
+        {
+          "id": "f-detail-total-d2",
+          "section": "明細",
+          "label": "診療明細合計",
+          "value": "1,280",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 48,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-pharmacy-001",
+      "doc_type": "調剤明細書",
+      "file_name": "202510244_D2_P1.pdf",
+      "display_name": "202510244_D2_P1",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-drug-name",
+          "section": "調剤内容",
+          "label": "薬品名①",
+          "value": "パクリタキセル注 100mg",
+          "confidence": 89,
+          "required": true,
+          "bbox": {
+            "top": 30,
+            "left": 35,
+            "width": 32,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-drug-name-2",
+          "section": "調剤内容",
+          "label": "薬品名②",
+          "value": "ロキソニン錠60mg",
+          "confidence": 93,
+          "required": false,
+          "bbox": {
+            "top": 34,
+            "left": 35,
+            "width": 28,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-total",
+          "section": "金額",
+          "label": "調剤合計",
+          "value": "1,250",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 48,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points-row-1",
+          "section": "点数",
+          "label": "点数",
+          "value": "42",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 40,
+            "left": 55,
+            "width": 10,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points-row-2",
+          "section": "点数",
+          "label": "点数",
+          "value": "82",
+          "confidence": 89,
+          "required": true,
+          "bbox": {
+            "top": 44,
+            "left": 55,
+            "width": 10,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points",
+          "section": "点数",
+          "label": "調剤点数内訳",
+          "value": "基本料42＋薬剤82",
+          "confidence": 87,
+          "required": false,
+          "bbox": {
+            "top": 42,
+            "left": 35,
+            "width": 35,
+            "height": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "doc-pharmacy-002",
+      "doc_type": "調剤明細書",
+      "file_name": "202510244_D2_P2.pdf",
+      "display_name": "202510244_D2_P2",
+      "image_url": "/mock/shinryo-meisai-sample.jpg",
+      "fields": [
+        {
+          "id": "f-drug-name-p2",
+          "section": "調剤内容",
+          "label": "薬品名①",
+          "value": "セフカペンピボキシル錠100mg",
+          "confidence": 91,
+          "required": true,
+          "bbox": {
+            "top": 30,
+            "left": 35,
+            "width": 32,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-total-p2",
+          "section": "金額",
+          "label": "調剤合計",
+          "value": "680",
+          "confidence": 92,
+          "required": true,
+          "bbox": {
+            "top": 48,
+            "left": 55,
+            "width": 18,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points-row-1-p2",
+          "section": "点数",
+          "label": "点数",
+          "value": "42",
+          "confidence": 90,
+          "required": true,
+          "bbox": {
+            "top": 40,
+            "left": 55,
+            "width": 10,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points-row-2-p2",
+          "section": "点数",
+          "label": "点数",
+          "value": "26",
+          "confidence": 88,
+          "required": true,
+          "bbox": {
+            "top": 44,
+            "left": 55,
+            "width": 10,
+            "height": 2
+          }
+        },
+        {
+          "id": "f-pharmacy-points-p2",
+          "section": "点数",
+          "label": "調剤点数内訳",
+          "value": "基本料42＋薬剤26",
+          "confidence": 88,
+          "required": false,
+          "bbox": {
+            "top": 42,
+            "left": 35,
+            "width": 35,
+            "height": 2
+          }
+        }
+      ]
+    }
+  ]
+}

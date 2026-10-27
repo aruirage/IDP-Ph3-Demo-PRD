@@ -1,0 +1,10 @@
+import JSZip from 'jszip'
+const elements=(root:Document|Element,tag:string)=>Array.from(root.getElementsByTagNameNS('*',tag))
+const xml=(s:string)=>{const doc=new DOMParser().parseFromString(s,'application/xml');if(elements(doc,'parsererror').length)throw Error('invalidDefinition');return doc}
+export async function readRows(file:File):Promise<string[][]>{
+ if(file.name.toLowerCase().endsWith('.csv')){const text=(await file.text()).replace(/^\uFEFF/,'');let row:string[]=[],cell='',quoted=false;const rows:string[][]=[];for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(c===','&&!quoted){row.push(cell);cell=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(Boolean))rows.push(row);row=[];cell=''}else cell+=c}row.push(cell);if(row.some(Boolean))rows.push(row);if(quoted)throw Error('invalidDefinition');return rows}
+ if(!file.name.toLowerCase().endsWith('.xlsx'))throw Error('invalidDefinition')
+ const zip=await JSZip.loadAsync(file),read=async(p:string)=>{const f=zip.file(p);if(!f)throw Error('invalidDefinition');return xml(await f.async('string'))},wb=await read('xl/workbook.xml'),rels=await read('xl/_rels/workbook.xml.rels'),sheet=elements(wb,'sheet')[0],rel=elements(rels,'Relationship').find(n=>n.getAttribute('Id')===sheet?.getAttribute('r:id'));if(!rel)throw Error('invalidDefinition');const target=new URL(rel.getAttribute('Target')||'','https://local/xl/').pathname.slice(1)
+ const shared=zip.file('xl/sharedStrings.xml')?elements(await read('xl/sharedStrings.xml'),'si').map(n=>elements(n,'t').map(t=>t.textContent||'').join('')):[]
+ return elements(await read(target),'row').map(row=>{const a:string[]=[];for(const c of elements(row,'c')){let ix=0;for(const ch of (c.getAttribute('r')||'A1').replace(/[0-9]/g,''))ix=ix*26+ch.charCodeAt(0)-64;const v=elements(c,'v')[0]?.textContent||'';a[ix-1]=c.getAttribute('t')==='s'?(shared[Number(v)]||''):c.getAttribute('t')==='inlineStr'?elements(c,'t').map(t=>t.textContent||'').join(''):v}return Array.from(a,v=>v||'')})
+}

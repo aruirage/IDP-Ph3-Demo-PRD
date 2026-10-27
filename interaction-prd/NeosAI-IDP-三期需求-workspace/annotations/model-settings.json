@@ -1,0 +1,50 @@
+{
+  "pageId": "model-settings",
+  "annotations": [
+    {
+      "id": "a-model-settings-1",
+      "number": 1,
+      "target": "[data-usage=\"ocrExtraction\"]",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.35125,
+      "y": 0.374796875,
+      "coordinateSpace": "document",
+      "title": "OCR可用模型",
+      "content": "用途割当的OCR卡片多选可用模型，保持与其他用途相同尺寸。模板从已保存的模型池选择主／验证模型。",
+      "status": "active"
+    },
+    {
+      "id": "a-model-settings-2",
+      "number": 2,
+      "target": "#tab-ocr-templates",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.179375,
+      "y": 0.374796875,
+      "coordinateSpace": "document",
+      "title": "OCR模板管理",
+      "content": "独立OCRテンプレート页签管理模型组合、对象账票和唯一兜底模板，切换页签保留草稿。",
+      "status": "active"
+    },
+    {
+      "id": "a-model-settings-3",
+      "number": 3,
+      "target": ".v-model-settings__toolbar--end",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.5675,
+      "y": 0.189796875,
+      "coordinateSpace": "document",
+      "title": "保存用途指派",
+      "content": "保存OCR模型池及其他用途指派；模型仍被模板引用时，先调整模板后再移除。模板在其页签独立保存。",
+      "status": "active"
+    }
+  ]
+}

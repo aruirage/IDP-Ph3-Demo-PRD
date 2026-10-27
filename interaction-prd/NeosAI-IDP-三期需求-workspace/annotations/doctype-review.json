@@ -1,0 +1,35 @@
+{
+  "pageId": "doctype-review",
+  "annotations": [
+    {
+      "id": "a-doctype-review-1",
+      "number": 1,
+      "target": ".v-doc-type-read-model-dialog__title",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.390625,
+      "y": 0.1883984375,
+      "coordinateSpace": "document",
+      "title": "账票人工确认规则",
+      "content": "Master相关三条旧规则合并为一项Master照合结果要确认；模型组合移到模型设定模板。",
+      "status": "active"
+    },
+    {
+      "id": "a-doctype-review-2",
+      "number": 2,
+      "target": ".v-doc-type-read-model-dialog__rules",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.505,
+      "y": 0.319390625,
+      "coordinateSpace": "document",
+      "title": "账票阈值",
+      "content": "自动采用阈值在本弹窗配置，默认90%，范围75%～100%，等于也采用；只对当前账票生效。",
+      "status": "active"
+    }
+  ]
+}

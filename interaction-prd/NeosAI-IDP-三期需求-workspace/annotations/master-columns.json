@@ -1,0 +1,72 @@
+{
+  "pageId": "master-columns",
+  "annotations": [
+    {
+      "id": "a-master-columns-1",
+      "number": 1,
+      "x": 0.46079,
+      "y": 0.2614,
+      "coordinateSpace": "document",
+      "title": "层级模板",
+      "content": "统一提供层级模板下载，不在每列重复。模板为层级、code、名称三列，不固定深度。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-columns-2",
+      "number": 2,
+      "x": 0.5664507234345351,
+      "y": 0.3048952792553192,
+      "coordinateSpace": "document",
+      "title": "照会code列",
+      "content": "每列独立勾选照会code。每个code列可以关联一份层级文件，不需要层级时留空。",
+      "status": "active",
+      "scope": {
+        "type": "dialog",
+        "selector": ".el-dialog:has(.v-master-data__column-list)",
+        "title": "列設定",
+        "anchor": {
+          "x": 0.6661268085863377,
+          "y": 0.39489496815453967
+        }
+      }
+    },
+    {
+      "id": "a-master-columns-3",
+      "number": 3,
+      "x": 0.5901884191176471,
+      "y": 0.3072520896656535,
+      "coordinateSpace": "document",
+      "title": "按列上传层级文件",
+      "content": "上传文件直接关联该code列。文件名完整展示，点击重新上传，叉号解除关联；不嵌套弹窗。名称照合列在账票类别设定。",
+      "status": "active",
+      "scope": {
+        "type": "dialog",
+        "selector": ".el-dialog:has(.v-master-data__column-list)",
+        "title": "列設定",
+        "anchor": {
+          "x": 0.7254710477941178,
+          "y": 0.4002163957876812
+        }
+      }
+    },
+    {
+      "id": "a-master-columns-4",
+      "number": 4,
+      "x": 0.6644219935958254,
+      "y": 0.5233306420972644,
+      "coordinateSpace": "document",
+      "title": "草稿保存",
+      "content": "文件校验后先进入草稿，随列设置一起保存。取消保留原配置；文件格式错误不覆盖原文件。",
+      "status": "active",
+      "scope": {
+        "type": "dialog",
+        "selector": ".el-dialog:has(.v-master-data__column-list)",
+        "title": "列設定",
+        "anchor": {
+          "x": 0.9110549839895636,
+          "y": 0.8880988214579264
+        }
+      }
+    }
+  ]
+}

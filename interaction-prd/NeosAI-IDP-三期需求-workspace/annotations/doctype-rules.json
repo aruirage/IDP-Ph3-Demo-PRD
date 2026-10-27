@@ -1,0 +1,37 @@
+{
+  "pageId": "doctype-rules",
+  "annotations": [
+    {
+      "id": "a-doctype-rules-1",
+      "number": 1,
+      "target": ".v-doc-type-process-rule-fields__rule-type",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.8671875,
+      "y": 0.326796875,
+      "coordinateSpace": "document",
+      "title": "QR Code",
+      "content": "现状：QR Code默认将所有扫描结果填入一个字段；\n更新后：可以选择是否将扫描结果填入一个字段，或将扫描结果按输入的分隔符分割，根据索引顺序填入该字段，满足一个qr结果填入多个字段的需求",
+      "status": "active",
+      "size": 22
+    },
+    {
+      "id": "a-doctype-rules-2",
+      "number": 2,
+      "target": ".p3-qr",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.8671875,
+      "y": 0.366796875,
+      "coordinateSpace": "document",
+      "title": "二维码分段参数",
+      "content": "二维码下拉第一行，全文／分割、分隔符和序号第二行，上下等宽。分段序号从1开始，最大值不能超过分隔符+1位数。\n如存在多个二维码时，根据解析结果是否含该分隔符来判断是否采用该qr解析结果，如果还是有多个二维码满足条件， 根据第二步的prompt以及正解走ocr路线。",
+      "status": "active",
+      "size": 22
+    }
+  ]
+}

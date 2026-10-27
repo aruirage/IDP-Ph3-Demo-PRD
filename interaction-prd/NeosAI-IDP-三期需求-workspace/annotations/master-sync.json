@@ -1,0 +1,65 @@
+{
+  "pageId": "master-sync",
+  "annotations": [
+    {
+      "id": "a-master-sync-1",
+      "number": 1,
+      "target": ".p3-source-row",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.505,
+      "y": 0.296,
+      "coordinateSpace": "document",
+      "title": "选择来源",
+      "content": "连接、来源数据和获取字段按钮在同一行。选择来源后点击按钮，才请求对应字段。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-sync-2",
+      "number": 2,
+      "target": ".p3-source-row>.el-button",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.505,
+      "y": 0.416,
+      "coordinateSpace": "document",
+      "title": "获取字段",
+      "content": "点击后显示加载状态，成功返回后更新下方字段快照；切换来源不会立即替换字段列表，旧请求不得覆盖新选择。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-sync-3",
+      "number": 3,
+      "target": ".el-dialog .el-table",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.505,
+      "y": 0.603,
+      "coordinateSpace": "document",
+      "title": "字段映射",
+      "content": "全量读取来源记录，不提供字段勾选或全选。目标仅为当前主数据业务列，可不映射，至少一列有效且目标不能重复。",
+      "status": "active"
+    },
+    {
+      "id": "a-master-sync-4",
+      "number": 4,
+      "target": ".el-dialog__footer",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.505,
+      "y": 0.774,
+      "coordinateSpace": "document",
+      "title": "保存同步配置",
+      "content": "获取字段且来源、映射有效后保存。原型为演示取数，不能证明真实接口可用。",
+      "status": "active"
+    }
+  ]
+}

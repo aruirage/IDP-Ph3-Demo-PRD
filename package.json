@@ -1,0 +1,18 @@
+{
+  "name": "neosai-idp-ph3-prd",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "setup": "npm --prefix prototype ci && npm --prefix interaction-prd/NeosAI-IDP-三期需求-workspace ci",
+    "dev": "node scripts/dev.mjs",
+    "build": "npm --prefix prototype run build && node scripts/build-prd-html.mjs",
+    "test": "node --test scripts/*.test.mjs",
+    "test:browser": "node scripts/check-prd-actions.cjs && node scripts/check-prd-download.cjs && node scripts/check-master-scenarios.cjs && node scripts/check-master-sync.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

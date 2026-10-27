@@ -1,0 +1,45 @@
+{
+  "pageId": "ocr-confirmation",
+  "annotations": [
+    {
+      "id": "a-ocr-confirmation-1",
+      "number": 1,
+      "target": ".p3-ocr-original",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.78375,
+      "y": 0.597,
+      "coordinateSpace": "document",
+      "title": "OCR原文核对",
+      "content": "原OCR值放在当前结果下方，默认收起，展开后只读核对。人工修正在当前业务字段进行。",
+      "status": "active"
+    },
+    {
+      "id": "a-ocr-confirmation-2",
+      "number": 2,
+      "target": ".v-ocr-fields__input-row",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.78375,
+      "y": 0.332,
+      "coordinateSpace": "document",
+      "title": "照合结果与层级",
+      "content": "当前值优先展示，有层级时显示对应路径快照；选择候选联动路径，不重新检索。",
+      "status": "active"
+    },
+    {
+      "id": "a-ocr-confirmation-3",
+      "number": 3,
+      "x": 0.6268234108159393,
+      "y": 0.5238886778115501,
+      "coordinateSpace": "document",
+      "title": "候选与结果快照",
+      "content": "未自动确定时选择本次已有候选，空候选允许直接改值。只回填账票引用的列；主数据更新不重算本次结果。",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "pageId": "api-settings",
+  "annotations": [
+    {
+      "id": "a-api-settings-1",
+      "number": 1,
+      "target": ".p3-end .el-button",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.9575,
+      "y": 0.197796875,
+      "coordinateSpace": "document",
+      "title": "外部数据连接",
+      "content": "连接可供多张表复用，提供连接测试。演示测试明确标注mock；修改地址后旧结果失效。每日同步时刻由系统固定。",
+      "status": "active"
+    },
+    {
+      "id": "a-api-settings-2",
+      "number": 2,
+      "target": ".p3-connections .el-table",
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "x": 0.5675,
+      "y": 0.269796875,
+      "coordinateSpace": "document",
+      "title": "连接列表",
+      "content": "显示名称、URL、创建时间、状态及操作者。正在被主数据引用的连接不能直接删除；未接入真实认证。",
+      "status": "active"
+    }
+  ]
+}

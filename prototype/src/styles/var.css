@@ -1,0 +1,56 @@
+:root {
+  --el-color-primary: #175cd3;
+  --app-font-family: 'Noto Sans JP', sans-serif;
+  --el-font-family: 'Noto Sans JP', sans-serif;
+  --el-color-danger: #e31b54;
+  --el-color-success: #12b76a;
+  --el-color-warning: #f79009;
+  --app-content-bg-color: #fafafa;
+  --left-menu-bg-color: #fff;
+  --top-header-bg-color: #fff;
+  --left-menu-max-width: 200px;
+  --left-menu-min-width: 64px;
+  --logo-height: 48px;
+  --top-tool-height: var(--logo-height);
+  --tags-view-height: 32px;
+  --top-header-total-height: var(--logo-height);
+  --app-content-padding: 12px;
+  --app-font-size-base: 15px;
+  --app-font-size-title: 28px;
+  --app-font-size-section: 18px;
+  --app-font-size-stat: 32px;
+  --app-line-height: 1.6;
+  --transition-time-02: 0.2s;
+  --el-color-primary-light-9: #eef4ff;
+  --primary-hover: #357af2;
+  --primary-active: #0f51c5;
+  --disabled-gray: #d5d7da;
+  --text-primary: #101828;
+  --text-secondary: #667085;
+  --border-color: #eaecf0;
+  --sidebar-icon-color: #667085;
+  --sidebar-icon-active: #175cd3;
+
+  /* Spacing scale（4px 基准，全站统一引用） */
+  --app-space-1: 4px;
+  --app-space-2: 8px;
+  --app-space-3: 12px;
+  --app-space-4: 16px;
+  --app-space-5: 20px;
+  --app-space-6: 24px;
+
+  /* Semantic spacing（模块间距统一由此引用） */
+  --app-page-gap: 12px;
+  --app-section-gap: 8px;
+  --app-panel-padding: 12px;
+  --app-stack-gap: var(--app-space-1);
+  --app-card-padding: var(--app-space-2);
+  --app-card-radius: 8px;
+  --app-inline-gap: 8px;
+
+  /* Bottom fixed action bar（与主内容区底部留白对齐） */
+  --app-action-bar-padding-y: 8px;
+  --app-action-bar-padding-x: 12px;
+  --app-action-bar-gap: 8px;
+  --app-action-bar-height: calc(var(--app-action-bar-padding-y) * 2 + 32px);
+}

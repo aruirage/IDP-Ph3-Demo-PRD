@@ -1,0 +1,423 @@
+// Element Plus + Tailwind Reset 兼容
+
+// 实心主按钮（不含 link / plain / text）
+.el-button.el-button--primary:not(.is-link):not(.is-plain):not(.is-text) {
+  --el-button-bg-color: var(--el-color-primary);
+  --el-button-border-color: var(--el-color-primary);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: var(--el-color-primary);
+  --el-button-hover-border-color: var(--el-color-primary);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: var(--primary-active);
+  --el-button-active-border-color: var(--primary-active);
+  --el-button-active-text-color: #fff;
+
+  background-color: var(--el-color-primary);
+  border-color: var(--el-color-primary);
+  color: #fff;
+  font-size: var(--app-font-size-base);
+  transition: none;
+
+  &:hover,
+  &:focus {
+    background-color: var(--el-color-primary);
+    border-color: var(--el-color-primary);
+    color: #fff;
+  }
+
+  &:active {
+    background-color: var(--primary-active);
+    border-color: var(--primary-active);
+    color: #fff;
+  }
+
+  .el-icon {
+    color: #fff;
+  }
+
+  &:disabled,
+  &.is-disabled {
+    background-color: #f9fafb;
+    border-color: var(--border-color);
+    color: var(--disabled-gray);
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      background-color: #f9fafb;
+      border-color: var(--border-color);
+      color: var(--disabled-gray);
+    }
+
+    .el-icon {
+      color: var(--disabled-gray);
+    }
+  }
+}
+
+// 实心警告按钮（補件等）：默认橙色填充，无 hover 变色
+.el-button.el-button--warning:not(.is-link):not(.is-plain):not(.is-text) {
+  --el-button-bg-color: var(--el-color-warning);
+  --el-button-border-color: var(--el-color-warning);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: var(--el-color-warning);
+  --el-button-hover-border-color: var(--el-color-warning);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: var(--el-color-warning);
+  --el-button-active-border-color: var(--el-color-warning);
+  --el-button-active-text-color: #fff;
+
+  background-color: var(--el-color-warning);
+  border-color: var(--el-color-warning);
+  color: #fff;
+  font-size: var(--app-font-size-base);
+  transition: none;
+
+  &:hover,
+  &:focus {
+    background-color: var(--el-color-warning);
+    border-color: var(--el-color-warning);
+    color: #fff;
+  }
+
+  &:active {
+    background-color: var(--el-color-warning);
+    border-color: var(--el-color-warning);
+    color: #fff;
+  }
+
+  .el-icon {
+    color: #fff;
+  }
+
+  &:disabled,
+  &.is-disabled {
+    background-color: #f9fafb;
+    border-color: var(--border-color);
+    color: var(--disabled-gray);
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      background-color: #f9fafb;
+      border-color: var(--border-color);
+      color: var(--disabled-gray);
+    }
+
+    .el-icon {
+      color: var(--disabled-gray);
+    }
+  }
+}
+
+// 实心成功按钮（確認済等）：绿色填充，无 hover 变色
+.el-button.el-button--success:not(.is-link):not(.is-plain):not(.is-text) {
+  --el-button-bg-color: var(--el-color-success);
+  --el-button-border-color: var(--el-color-success);
+  --el-button-text-color: #fff;
+  --el-button-hover-bg-color: var(--el-color-success);
+  --el-button-hover-border-color: var(--el-color-success);
+  --el-button-hover-text-color: #fff;
+  --el-button-active-bg-color: var(--el-color-success);
+  --el-button-active-border-color: var(--el-color-success);
+  --el-button-active-text-color: #fff;
+
+  background-color: var(--el-color-success);
+  border-color: var(--el-color-success);
+  color: #fff;
+  font-size: var(--app-font-size-base);
+  transition: none;
+
+  &:hover,
+  &:focus {
+    background-color: var(--el-color-success);
+    border-color: var(--el-color-success);
+    color: #fff;
+  }
+
+  &:active {
+    background-color: var(--el-color-success);
+    border-color: var(--el-color-success);
+    color: #fff;
+  }
+
+  .el-icon {
+    color: #fff;
+  }
+
+  &:disabled,
+  &.is-disabled {
+    background-color: #f9fafb;
+    border-color: var(--border-color);
+    color: var(--disabled-gray);
+    cursor: not-allowed;
+
+    &:hover,
+    &:focus {
+      background-color: #f9fafb;
+      border-color: var(--border-color);
+      color: var(--disabled-gray);
+    }
+
+    .el-icon {
+      color: var(--disabled-gray);
+    }
+  }
+}
+
+// 链接按钮：主题色文字，透明底（勿套用实心主按钮样式）
+.el-button.is-link,
+.el-button.is-link.el-button--primary {
+  --el-button-text-color: var(--el-color-primary);
+  --el-button-hover-link-text-color: var(--el-color-primary);
+  --el-button-bg-color: transparent;
+  --el-button-border-color: transparent;
+  --el-button-hover-bg-color: transparent;
+  --el-button-hover-border-color: transparent;
+
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--el-color-primary);
+  padding: 0;
+  height: auto;
+  font-size: var(--app-font-size-base);
+  font-weight: 500;
+  transition: none;
+
+  &:hover,
+  &:focus {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--el-color-primary);
+    opacity: 1;
+  }
+
+  .el-icon {
+    color: var(--el-color-primary);
+  }
+}
+
+.el-alert .el-button.is-link,
+.el-alert .el-button.is-link.el-button--primary {
+  color: var(--el-color-primary);
+
+  .el-icon {
+    color: var(--el-color-primary);
+  }
+}
+
+.el-button {
+  font-weight: 500;
+}
+
+.el-table {
+  font-size: var(--app-font-size-base);
+}
+
+// 列表语义 Tag：适老化字号，与表格正文一致
+.el-tag {
+  --el-tag-font-size: var(--app-font-size-base);
+  font-size: var(--app-font-size-base);
+  height: 28px;
+  padding: 0 10px;
+  line-height: 26px;
+}
+
+.el-table__row:hover > td.el-table__cell {
+  background-color: #f9fafb;
+}
+
+.el-button.el-button--default:not(.is-link) {
+  background-color: #fff;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+
+  &:hover,
+  &:focus {
+    background-color: #fff;
+    border-color: var(--border-color);
+    color: var(--text-primary);
+  }
+
+  &:disabled {
+    color: var(--disabled-gray);
+    background-color: #f9fafb;
+  }
+}
+
+.el-alert__title {
+  font-size: var(--app-font-size-base);
+  line-height: 1.6;
+}
+
+// 確認ダイアログ：flex レイアウトに合わせた留白・对齐
+.el-message-box {
+  --el-messagebox-width: 480px;
+  width: 480px;
+  max-width: calc(100vw - 32px);
+  padding: 0;
+  border-radius: 12px;
+  box-sizing: border-box;
+
+  &__header {
+    padding: var(--app-panel-padding) var(--app-content-padding) 0;
+
+    &.show-close {
+      padding-right: 48px;
+    }
+  }
+
+  &__title {
+    font-size: var(--app-font-size-section);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--text-primary);
+  }
+
+  &__headerbtn {
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+  }
+
+  &__content {
+    padding: var(--app-panel-padding) var(--app-content-padding) 0;
+    color: var(--text-primary);
+  }
+
+  &__container {
+    align-items: flex-start;
+    gap: var(--app-section-gap);
+  }
+
+  &__status {
+    flex-shrink: 0;
+    font-size: 22px;
+    line-height: 1.5;
+    margin-top: 1px;
+  }
+
+  &__message {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--app-font-size-base);
+    line-height: 1.7;
+    color: var(--text-primary);
+    word-break: keep-all;
+
+    p {
+      margin: 0;
+      line-height: 1.7;
+    }
+  }
+
+  &__btns {
+    padding: var(--app-panel-padding) var(--app-content-padding) var(--app-content-padding);
+    gap: 8px;
+  }
+}
+
+// 全站禁止横向滚动条（表格等内容超出时截断 + tooltip）
+.el-table {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+.el-table__body-wrapper,
+.el-table__header-wrapper {
+  overflow-x: hidden !important;
+}
+
+.el-table .el-scrollbar__bar.is-horizontal {
+  display: none !important;
+}
+
+// 列表页表格列：番号 / 操作
+.el-table {
+  th.v-list-table__index-col.el-table__cell,
+  td.v-list-table__index-col.el-table__cell {
+    .cell {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+  }
+
+  th.v-list-table__index-col.el-table__cell .cell {
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  th.v-list-table__actions-col.el-table__cell,
+  td.v-list-table__actions-col.el-table__cell {
+    overflow: visible;
+
+    .cell {
+      padding-left: 8px;
+      padding-right: 12px;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  }
+
+  td.v-list-table__actions-col.el-table__cell .cell {
+    white-space: nowrap;
+  }
+
+  td.v-list-table__actions-col.el-table__cell .cell .el-button.is-link {
+    flex-shrink: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+.v-list-table__actions {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: max-content;
+  max-width: 100%;
+}
+
+// 帐票タイプ配置内表格（与用户管理 / 任务列表等列表页一致）
+.el-table.v-doc-type-table {
+  font-size: var(--app-font-size-base);
+  --el-table-header-bg-color: #f9fafb;
+
+  .el-table__cell {
+    padding: 12px 10px;
+  }
+
+  th.el-table__cell .cell {
+    white-space: nowrap;
+  }
+}
+
+.el-scrollbar__wrap {
+  overflow-x: hidden !important;
+}
+
+// 必填项：统一「必须」标签，隐藏 Element Plus 默认红星
+.el-form-item.is-required:not(.is-no-asterisk) > .el-form-item__label::before,
+.el-form-item.is-required:not(.is-no-asterisk) .el-form-item__label::before {
+  display: none !important;
+  content: none !important;
+  margin: 0 !important;
+}
+
+.app-form-item__label-row {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+.app-form-item__label-text {
+  line-height: 1.4;
+}
+
+/* Required validation stays active; omit visual asterisk markers. */
+.el-form-item.is-required .el-form-item__label::before,
+.el-form-item.is-required .el-form-item__label::after { display:none !important; }
+.p3-required, .v-ocr-fields__required { display:none !important; }
