@@ -257,6 +257,7 @@ function createDiagnosisFormFields(): OcrExtractionField[] {
     },
     {
       id: 'd-disease',
+      phase3ModelTrusted:true,
       masterDataId:'master-disease',masterDataColumnId:'col-d-name', masterCodeColumnId:'col-d-code',
       section: '診断内容',
       label: '傷病名',
@@ -700,7 +701,7 @@ export function getFieldAlert(
 ): OcrFieldAlert {
   const primary = getMasterMatchPrimaryField(field, allFields)
   if(field.masterMatchError||primary.masterMatchError)return 'master-execution-error'
-  if (primary.masterMatchConfirmRule && primary.masterReviewEnabled!==false && !primary.masterAutoAdopted && getMasterMatchDropdownOptions(primary, allFields).some(item => item.strategy !== 'ocr')) {
+  if (primary.masterMatchConfirmRule && primary.masterReviewEnabled!==false && !primary.masterAutoAdopted && (primary.masterDataId || getMasterMatchDropdownOptions(primary, allFields).some(item => item.strategy !== 'ocr'))) {
     return masterMatchAlertFromRule(primary.masterMatchConfirmRule)
   }
   const hasMasterValue=!!field.masterMatchStrategy&&field.masterMatchStrategy!=='ocr'

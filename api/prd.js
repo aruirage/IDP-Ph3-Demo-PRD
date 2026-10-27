@@ -5,7 +5,7 @@ import {handleCloudApi} from '../scripts/prd-cloud-api.mjs';
 import {createCloudStore} from '../scripts/prd-cloud-store.mjs';
 let seed;
 export default async function handler(req,res){
- res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json;charset=utf-8');
+ res.setHeader('X-PRD-Commit',process.env.VERCEL_GIT_COMMIT_SHA||'local');res.setHeader('Cache-Control','no-store');res.setHeader('Content-Type','application/json;charset=utf-8');
  try{
   seed||=JSON.parse(await fs.readFile(path.join(process.cwd(),'.vercel-data/seed.json'),'utf8'));
   const {pathname,query}=parseVercelRequest(req);

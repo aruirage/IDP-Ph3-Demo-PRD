@@ -6,8 +6,9 @@ import type { OcrExtractionField, OcrMasterMatchCandidate } from './ocrExtractio
 export function applyPhase3Once(fields:OcrExtractionField[],docTypeName?:string){
  const review=docTypeDefinitions.value.find(d=>d.name===docTypeName)?.readModel
  for(const field of fields){field.ocrOriginalValue??=field.value;if(field.phase3Matched)continue;field.phase3Matched=true;field.masterReviewEnabled=review?.masterReviewEnabled??true
- if(!field.masterDataId||!field.masterMatchCandidates?.length)continue
+ if(!field.masterDataId)continue
  const table=findMasterDefinition(field.masterDataId);if(!table)continue
+ if(!field.masterMatchCandidates?.length){field.masterMatchConfirmRule||='empty-result';continue}
  const candidates=field.masterMatchCandidates.filter(c=>c.strategy!=='code'&&(c.similarityScore||0)>75).sort(compareSimilarityCandidates).slice(0,3)
  const bindings=activeHierarchies(table),binding=field.masterCodeColumnId?bindings.find(([id])=>id===field.masterCodeColumnId)?.[1]:bindings.length===1?bindings[0][1]:undefined
  const hierarchyPath=(code:string)=>{const path:string[]=[],seen=new Set<string>();let node=binding?.nodes.find(n=>n.code.replace(/\./g,'')===code.replace(/\./g,''));while(node&&!seen.has(node.code)){seen.add(node.code);path.unshift(`${node.code} ${node.name}`);node=binding?.nodes.find(n=>n.code===node?.parent)}return path.join(' › ')}
@@ -37,7 +38,7 @@ export function applyPhase3Once(fields:OcrExtractionField[],docTypeName?:string)
  }
  let adopted:OcrMasterMatchCandidate|undefined
  if(exactCandidates.length>1){adopted=commonOfficial(exactCandidates)}
- else if(exact){if(candidates.some(c=>codeOf(c)===codeOf(exact))||field.phase3ModelTrusted===true)adopted=exact}
+ else if(exact){if(field.phase3ModelTrusted===true)adopted=exact}
  else if(candidates.length){if((candidates[0].similarityScore||0)>=(review?.autoAdoptThreshold??90))adopted=candidates[0];else if(candidates.length>1&&binding?.nodes.length)adopted=commonOfficial(candidates)}
  field.masterReviewEnabled=review?.masterReviewEnabled??true
  if(!adopted)field.masterMatchConfirmRule||='low-similarity'
