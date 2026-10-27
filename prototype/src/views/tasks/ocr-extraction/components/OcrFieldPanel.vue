@@ -100,6 +100,10 @@ function selectedCandidate(field:OcrExtractionField){return candidates(field).fi
  const values=item.linkedValues||{[field.id]:item.value}
  return (item.strategy===(field.masterHierarchyOfficial?'parent':field.masterMatchStrategy)||item.strategy==='ocr')&&Object.entries(values).every(([id,value])=>(!props.fields.some(member=>member.id===id)||props.fields.find(member=>member.id===id)!.value===value))
 })}
+function displayedCandidate(field:OcrExtractionField){
+ const selected=selectedCandidate(field)
+ return selected&&selected.strategy!=='ocr'?selected:candidates(field).find(item=>item.strategy!=='ocr')
+}
 function chooseCandidate(field:OcrExtractionField,key:string){const item=candidates(field).find(item=>candidateKey(item)===key);if(item)emit('selectMasterMatch',field.id,item)}
 function setRowRef(fieldId: string, el: Element | ComponentPublicInstance | null) {
   const node = el instanceof HTMLElement ? el : (el as ComponentPublicInstance | null)?.$el
@@ -252,6 +256,8 @@ defineExpose({ scrollToField })
               @update:model-value="(value: string) => updateValue(field.id, value)"
             />
 
+
+
             <el-tooltip v-if="!readonly" :content="$t('tasks.common.restoreOcrValue')" placement="top">
               <span class="v-ocr-fields__restore-wrap" @click.stop>
                 <el-button
@@ -274,13 +280,17 @@ defineExpose({ scrollToField })
             >
               {{ isFieldUserConfirmed(field, fields) ? $t('tasks.common.confirmed') : $t('tasks.common.confirmAction') }}
             </el-button>
+            <button v-if="hasMasterCandidates(field) && field.masterAutoAdopted" type="button" class="p3-candidates-toggle" :aria-expanded="!!expandedCandidates[field.id]" :aria-controls="'master-candidates-'+field.id" :aria-label="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" :title="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" @click.stop="expandedCandidates[field.id]=!expandedCandidates[field.id]">
+              <span aria-hidden="true">{{expandedCandidates[field.id]?'⌃':'⌄'}}</span>
+            </button>
           </div>
 
-          <div v-if="hasMasterCandidates(field) && candidates(field).length" class="p3-inline-candidates" @click.stop>
-            <button type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" :aria-label="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" :title="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
+          <div v-if="hasMasterCandidates(field) && candidates(field).length && (!field.masterAutoAdopted || expandedCandidates[field.id])" class="p3-inline-candidates" @click.stop>
+            <button v-if="!field.masterAutoAdopted && displayedCandidate(field)" type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
+              <span class="p3-candidate-title"><el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':displayedCandidate(field)!.strategy==='ocr'}">{{masterStrategyLabel(displayedCandidate(field)!.strategy)}}</el-tag><span>{{displayedCandidate(field)!.value}}</span></span>
               <span class="p3-candidate-chevron" aria-hidden="true">{{expandedCandidates[field.id]?'⌃':'⌄'}}</span>
             </button>
-            <div v-if="expandedCandidates[field.id]" class="p3-candidate-options" role="radiogroup" :aria-label="$t('phase3.selectCandidate')">
+            <div v-if="expandedCandidates[field.id]" :id="'master-candidates-'+field.id" class="p3-candidate-options" role="radiogroup" :aria-label="$t('phase3.selectCandidate')">
               <button v-for="item in candidates(field)" :key="candidateKey(item)" type="button" role="radio" :aria-checked="!!selectedCandidate(field) && candidateKey(selectedCandidate(field)!)===candidateKey(item)" :disabled="readonly" class="p3-candidate-option" @click="chooseCandidate(field,candidateKey(item))">
                 <span class="p3-candidate-radio" :class="{'is-selected':!!selectedCandidate(field) && candidateKey(selectedCandidate(field)!)===candidateKey(item)}"></span>
                 <span class="p3-candidate-title"><el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':item.strategy==='ocr'}">{{masterStrategyLabel(item.strategy)}}</el-tag><span>{{item.value}}</span><el-tag v-if="field.masterAutoAdopted && isAdoptedCandidate(field,item)" size="small" effect="light" class="p3-auto-adopt-tag">{{$t('phase3.autoAdopted')}}</el-tag></span>
@@ -692,7 +702,10 @@ defineExpose({ scrollToField })
 <style scoped>
 .p3-inline-candidates{margin-top:2px;width:100%}
 .p3-candidate-header,.p3-candidate-option{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;background:var(--el-bg-color);color:var(--el-text-color-regular);cursor:pointer}
-.p3-candidate-header{width:32px;min-height:28px;margin-left:auto;padding:0;border:0;border-radius:4px;justify-content:center;background:transparent}
+.p3-candidate-header{min-height:34px;padding:4px 12px;border:1px solid var(--el-border-color-light);border-radius:4px;justify-content:space-between}
+.p3-candidates-toggle{width:28px;height:32px;flex:0 0 28px;padding:0;border:0;border-radius:4px;background:transparent;color:var(--el-text-color-regular);font-size:20px;cursor:pointer}
+.p3-candidates-toggle:hover{background:var(--el-fill-color-light)}
+.p3-candidates-toggle:focus-visible{outline:2px solid var(--el-color-primary);outline-offset:2px}
 .p3-candidate-header:hover{background:var(--el-fill-color-light)}
 .p3-candidate-header:focus-visible{outline:2px solid var(--el-color-primary);outline-offset:2px}
 .p3-candidate-chevron{font-size:20px;flex-shrink:0}
