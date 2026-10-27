@@ -87,11 +87,24 @@ function hasMasterCandidates(field: OcrExtractionField): boolean {
   return hasMasterMatchDropdown(field, props.fields)
 }
 
+const originallyAdopted = new WeakMap<OcrExtractionField,string>()
+const initiallyAutomatic = new WeakMap<OcrExtractionField,boolean>()
+function usesAutomaticLayout(field:OcrExtractionField){
+ if(!initiallyAutomatic.has(field)){
+  initiallyAutomatic.set(field,!!field.masterAutoAdopted)
+  if(field.masterAutoAdopted){const adopted=candidates(field).find(item=>matchesAdoptedValue(field,item));if(adopted)originallyAdopted.set(field,candidateKey(adopted))}
+ }
+ return initiallyAutomatic.get(field)===true
+}
 const expandedCandidates = ref<Record<string,boolean>>({})
 watch(()=>props.fields,()=>{expandedCandidates.value={}},{immediate:true})
 
 function candidateKey(item:OcrMasterMatchCandidate){return `${item.strategy}:${item.value}`}
 function isAdoptedCandidate(field:OcrExtractionField,item:OcrMasterMatchCandidate){
+ usesAutomaticLayout(field)
+ return originallyAdopted.get(field)===candidateKey(item)
+}
+function matchesAdoptedValue(field:OcrExtractionField,item:OcrMasterMatchCandidate){
  if(item.strategy==='ocr'||item.strategy!==(field.masterHierarchyOfficial?'parent':field.masterMatchStrategy))return false
  return Object.entries(item.linkedValues||{[field.id]:item.value}).every(([id,value])=>(!props.fields.some(member=>member.id===id)||props.fields.find(member=>member.id===id)!.value===value))
 }
@@ -280,20 +293,20 @@ defineExpose({ scrollToField })
             >
               {{ isFieldUserConfirmed(field, fields) ? $t('tasks.common.confirmed') : $t('tasks.common.confirmAction') }}
             </el-button>
-            <button v-if="hasMasterCandidates(field) && field.masterAutoAdopted" type="button" class="p3-candidates-toggle" :aria-expanded="!!expandedCandidates[field.id]" :aria-controls="'master-candidates-'+field.id" :aria-label="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" :title="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" @click.stop="expandedCandidates[field.id]=!expandedCandidates[field.id]">
+            <button v-if="hasMasterCandidates(field) && usesAutomaticLayout(field)" type="button" class="p3-candidates-toggle" :aria-expanded="!!expandedCandidates[field.id]" :aria-controls="'master-candidates-'+field.id" :aria-label="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" :title="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" @click.stop="expandedCandidates[field.id]=!expandedCandidates[field.id]">
               <span aria-hidden="true">{{expandedCandidates[field.id]?'⌃':'⌄'}}</span>
             </button>
           </div>
 
-          <div v-if="hasMasterCandidates(field) && candidates(field).length && (!field.masterAutoAdopted || expandedCandidates[field.id])" class="p3-inline-candidates" @click.stop>
-            <button v-if="!field.masterAutoAdopted && displayedCandidate(field)" type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
+          <div v-if="hasMasterCandidates(field) && candidates(field).length && (!usesAutomaticLayout(field) || expandedCandidates[field.id])" class="p3-inline-candidates" @click.stop>
+            <button v-if="!usesAutomaticLayout(field) && displayedCandidate(field)" type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
               <span class="p3-candidate-title"><el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':displayedCandidate(field)!.strategy==='ocr'}">{{masterStrategyLabel(displayedCandidate(field)!.strategy)}}</el-tag><span>{{displayedCandidate(field)!.value}}</span></span>
               <span class="p3-candidate-chevron" aria-hidden="true">{{expandedCandidates[field.id]?'⌃':'⌄'}}</span>
             </button>
             <div v-if="expandedCandidates[field.id]" :id="'master-candidates-'+field.id" class="p3-candidate-options" role="radiogroup" :aria-label="$t('phase3.selectCandidate')">
               <button v-for="item in candidates(field)" :key="candidateKey(item)" type="button" role="radio" :aria-checked="!!selectedCandidate(field) && candidateKey(selectedCandidate(field)!)===candidateKey(item)" :disabled="readonly" class="p3-candidate-option" @click="chooseCandidate(field,candidateKey(item))">
                 <span class="p3-candidate-radio" :class="{'is-selected':!!selectedCandidate(field) && candidateKey(selectedCandidate(field)!)===candidateKey(item)}"></span>
-                <span class="p3-candidate-title"><el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':item.strategy==='ocr'}">{{masterStrategyLabel(item.strategy)}}</el-tag><span>{{item.value}}</span><el-tag v-if="field.masterAutoAdopted && isAdoptedCandidate(field,item)" size="small" effect="light" class="p3-auto-adopt-tag">{{$t('phase3.autoAdopted')}}</el-tag></span>
+                <span class="p3-candidate-title"><el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':item.strategy==='ocr'}">{{masterStrategyLabel(item.strategy)}}</el-tag><span>{{item.value}}</span><el-tag v-if="isAdoptedCandidate(field,item)" size="small" effect="light" class="p3-auto-adopt-tag">{{$t('phase3.autoAdopted')}}</el-tag></span>
               </button>
             </div>
           </div>
