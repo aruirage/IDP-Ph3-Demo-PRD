@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, type ComponentPublicInstance } from 'vue'
+import { computed, nextTick, ref, watch, type ComponentPublicInstance } from 'vue'
 import { t } from '@/i18n/translate'
 import { mockUiText } from '@/i18n/mockUiText'
 import { Check, CircleCheck, RefreshLeft } from '@element-plus/icons-vue'
@@ -88,23 +88,18 @@ function hasMasterCandidates(field: OcrExtractionField): boolean {
 }
 
 const expandedCandidates = ref<Record<string,boolean>>({})
+watch(()=>props.fields,()=>{expandedCandidates.value={}},{immediate:true})
+
 function candidateKey(item:OcrMasterMatchCandidate){return `${item.strategy}:${item.value}`}
 function isAdoptedCandidate(field:OcrExtractionField,item:OcrMasterMatchCandidate){
  if(item.strategy==='ocr'||item.strategy!==(field.masterHierarchyOfficial?'parent':field.masterMatchStrategy))return false
  return Object.entries(item.linkedValues||{[field.id]:item.value}).every(([id,value])=>(!props.fields.some(member=>member.id===id)||props.fields.find(member=>member.id===id)!.value===value))
 }
-function candidates(field:OcrExtractionField){
- const rank=(item:OcrMasterMatchCandidate)=>item.strategy==='code'?0:item.strategy==='parent'?2:item.strategy==='ocr'?3:1
- return getMasterMatchDropdownOptions(field,props.fields).sort((a,b)=>Number(isAdoptedCandidate(field,b))-Number(isAdoptedCandidate(field,a))||rank(a)-rank(b)||(b.similarityScore??0)-(a.similarityScore??0))
-}
+function candidates(field:OcrExtractionField){return getMasterMatchDropdownOptions(field,props.fields)}
 function selectedCandidate(field:OcrExtractionField){return candidates(field).find(item=>{
  const values=item.linkedValues||{[field.id]:item.value}
  return (item.strategy===(field.masterHierarchyOfficial?'parent':field.masterMatchStrategy)||item.strategy==='ocr')&&Object.entries(values).every(([id,value])=>(!props.fields.some(member=>member.id===id)||props.fields.find(member=>member.id===id)!.value===value))
 })}
-function displayedCandidate(field:OcrExtractionField){
- const selected=selectedCandidate(field)
- return selected?.strategy!=='ocr'&&selected?selected:candidates(field).find(item=>item.strategy!=='ocr')
-}
 function chooseCandidate(field:OcrExtractionField,key:string){const item=candidates(field).find(item=>candidateKey(item)===key);if(item)emit('selectMasterMatch',field.id,item)}
 function setRowRef(fieldId: string, el: Element | ComponentPublicInstance | null) {
   const node = el instanceof HTMLElement ? el : (el as ComponentPublicInstance | null)?.$el
@@ -282,13 +277,7 @@ defineExpose({ scrollToField })
           </div>
 
           <div v-if="hasMasterCandidates(field) && candidates(field).length" class="p3-inline-candidates" @click.stop>
-            <button type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
-              <span v-if="displayedCandidate(field)" class="p3-candidate-title">
-                <el-tag size="small" effect="light" class="p3-match-source-tag" :class="{'is-ocr':displayedCandidate(field)!.strategy==='ocr'}">{{masterStrategyLabel(displayedCandidate(field)!.strategy)}}</el-tag>
-                <span>{{displayedCandidate(field)!.value}}</span><el-tag v-if="field.masterAutoAdopted && isAdoptedCandidate(field,displayedCandidate(field)!)" size="small" effect="light" class="p3-auto-adopt-tag">{{$t('phase3.autoAdopted')}}</el-tag>
-                
-              </span>
-              <span v-else>{{$t('phase3.selectCandidate')}}</span>
+            <button type="button" class="p3-candidate-header" :aria-expanded="!!expandedCandidates[field.id]" :aria-label="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" :title="$t(expandedCandidates[field.id]?'phase3.collapseMatchCandidates':'phase3.expandMatchCandidates')" @click="expandedCandidates[field.id]=!expandedCandidates[field.id]">
               <span class="p3-candidate-chevron" aria-hidden="true">{{expandedCandidates[field.id]?'⌃':'⌄'}}</span>
             </button>
             <div v-if="expandedCandidates[field.id]" class="p3-candidate-options" role="radiogroup" :aria-label="$t('phase3.selectCandidate')">
@@ -298,7 +287,7 @@ defineExpose({ scrollToField })
               </button>
             </div>
           </div>
-          <div v-if="field.masterMatchStrategy && field.masterMatchStrategy!=='ocr' && !hasMasterCandidates(field)" class="p3-match-detail"><el-tag size="small" effect="light" class="p3-match-source-tag">{{masterStrategyLabel(field.masterMatchStrategy)}}</el-tag><span>{{field.value}}</span></div>
+          <div v-if="expandedCandidates[field.id] && field.masterMatchStrategy && field.masterMatchStrategy!=='ocr' && !hasMasterCandidates(field)" class="p3-match-detail"><el-tag size="small" effect="light" class="p3-match-source-tag">{{masterStrategyLabel(field.masterMatchStrategy)}}</el-tag><span>{{field.value}}</span></div>
           <p v-if="needsFieldReview(field, fields)" class="v-ocr-fields__alert-reason">
             {{ field.masterMatchError ? mockUiText(field.masterMatchError) : getFieldAlertLabel(fieldAlert(field)) }}
           </p>
@@ -352,6 +341,7 @@ defineExpose({ scrollToField })
 </template>
 
 <style scoped lang="scss">
+
 .v-ocr-fields {
   display: flex;
   flex-direction: column;
@@ -700,9 +690,11 @@ defineExpose({ scrollToField })
 <style scoped>.p3-candidate-inline-path,.p3-match-detail .p3-match-path{background:var(--el-fill-color-light);border-radius:3px;padding:2px 7px;font-size:12px;flex:0 0 auto!important;white-space:nowrap}.p3-match-detail>span:not(.el-tag){font-weight:500}.p3-match-detail .p3-match-path{margin-left:auto}</style>
 
 <style scoped>
-.p3-inline-candidates{margin-top:6px;width:100%}
+.p3-inline-candidates{margin-top:2px;width:100%}
 .p3-candidate-header,.p3-candidate-option{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;background:var(--el-bg-color);color:var(--el-text-color-regular);cursor:pointer}
-.p3-candidate-header{min-height:34px;padding:4px 12px;border:1px solid var(--el-border-color-light);border-radius:4px;justify-content:space-between}
+.p3-candidate-header{width:32px;min-height:28px;margin-left:auto;padding:0;border:0;border-radius:4px;justify-content:center;background:transparent}
+.p3-candidate-header:hover{background:var(--el-fill-color-light)}
+.p3-candidate-header:focus-visible{outline:2px solid var(--el-color-primary);outline-offset:2px}
 .p3-candidate-chevron{font-size:20px;flex-shrink:0}
 .p3-candidate-options{margin-top:4px;border:1px solid var(--el-border-color-light);border-radius:6px;padding:4px 0;background:var(--el-bg-color)}
 .p3-candidate-option{min-height:34px;padding:5px 12px;border:0}

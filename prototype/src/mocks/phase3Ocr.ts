@@ -39,7 +39,12 @@ export function applyPhase3Once(fields:OcrExtractionField[],docTypeName?:string)
  let adopted:OcrMasterMatchCandidate|undefined
  if(exactCandidates.length>1){adopted=commonOfficial(exactCandidates)}
  else if(exact){if(field.phase3ModelTrusted===true)adopted=exact}
- else if(candidates.length){if((candidates[0].similarityScore||0)>=(review?.autoAdoptThreshold??90))adopted=candidates[0];else if(candidates.length>1&&binding?.nodes.length)adopted=commonOfficial(candidates)}
+ else if(candidates.length){
+  const highest=candidates[0].similarityScore||0
+  if(highest>=(review?.autoAdoptThreshold??90)){
+   if(candidates.filter(candidate=>candidate.similarityScore===highest).length===1)adopted=candidates[0]
+  }else if(candidates.length>1&&binding?.nodes.length)adopted=commonOfficial(candidates)
+ }
  field.masterReviewEnabled=review?.masterReviewEnabled??true
  if(!adopted)field.masterMatchConfirmRule||='low-similarity'
  if(adopted){field.masterMatchCandidates=[adopted,...(field.masterMatchCandidates||[])];field.masterHierarchyOfficial=adopted.hierarchyOfficial;field.masterHierarchyLevel=adopted.hierarchyLevel;field.masterAutoAdopted=true;field.masterMatchStrategy=adopted.strategy;field.masterMatchSimilarity=adopted.similarityScore;field.masterHierarchyPath=adopted.hierarchyPath;for(const [id,value]of Object.entries(adopted.linkedValues||{[field.id]:adopted.value})){const target=fields.find(f=>f.id===id);if(target){target.ocrOriginalValue??=target.value;target.masterHierarchyOfficial=adopted.hierarchyOfficial;target.masterHierarchyLevel=adopted.hierarchyLevel;target.masterAutoAdopted=true;target.masterHierarchyPath=adopted.hierarchyPath;target.masterMatchStrategy=adopted.strategy;target.masterMatchSimilarity=adopted.similarityScore;target.value=value;delete target.masterMatchConfirmRule}}field.value=adopted.linkedValues?.[field.id]||adopted.value;delete field.masterMatchConfirmRule}

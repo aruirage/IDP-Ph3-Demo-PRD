@@ -1,4 +1,4 @@
-import { compareSimilarityCandidates } from './masterCandidateOrder'
+import { compareSimilarityCandidates, compareMasterCandidateSources } from './masterCandidateOrder'
 import { autoAdoptScenarioFields, manualReviewScenarioFields } from './masterMatchScenarioFixtures'
 import { customerIcdSample } from './customerIcdSample'
 import { MOCK_SAMPLE_MEDIA_URL } from '@/constants/mockSampleMedia'
@@ -882,7 +882,7 @@ export function getMasterMatchDropdownOptions(
         linkedValues: { [field.id]: matched }
       })
     }
-    return options
+    return options.sort(compareMasterCandidateSources)
   }
 
   if (rule === 'low-similarity') {
@@ -897,13 +897,13 @@ export function getMasterMatchDropdownOptions(
     for (const candidate of getSortedMasterMatchCandidates(primary)) {
       pushCandidate(candidate)
     }
-    return options
+    return options.sort(compareMasterCandidateSources)
   }
 
   const ocrLinkedValues = buildOcrLinkedValues(primary, allFields)
   if (ocrDisplay) pushCandidate({strategy:'ocr', value:ocrDisplay, linkedValues:ocrLinkedValues})
   for (const candidate of getSortedMasterMatchCandidates(primary)) pushCandidate(candidate)
-  return options
+  return options.sort(compareMasterCandidateSources)
 }
 
 export function hasMasterMatchDropdown(
