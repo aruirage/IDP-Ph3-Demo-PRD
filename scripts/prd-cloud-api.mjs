@@ -8,7 +8,7 @@ import {moduleSections,readSection} from './prd-sections.mjs';
 import {reviewManifest} from './prd-review-manifest.mjs';
 import {mergeCanvasManifest} from './canvas-manifest.mjs';
 import {searchPrd} from './prd-search.mjs';
-import {selectPrdSources} from './prd-model-selector.mjs';
+import {answerPrd as selectPrdSources} from './prd-model-selector.mjs';
 const hash=text=>createHash('sha256').update(text).digest('hex');
 function initialState(seed){const fingerprint=hash(seed.canonical);return {revision:null,baseHash:fingerprint,canonical:seed.canonical,manifest:structuredClone(seed.manifest),comments:[],history:seed.history||{schemaVersion:1,entries:[{id:'baseline-'+fingerprint,kind:'baseline',createdAt:seed.builtAt,hash:fingerprint,content:seed.canonical,note:'部署时的初始内容'}]}};}
 const mutations=new Set(['PUT /api/file','POST /api/prd-comments','POST /api/prd-history/publish','POST /api/prd-history/restore']);
@@ -47,8 +47,8 @@ export async function handleCloudApi({pathname,method,query=new URLSearchParams(
    if(data.scope==='module'){if(!moduleSections[data.path])throw Error('当前章节不支持下载');text=readSection(text,data.path);title=manifest.modules.find(m=>m.prd===data.path)?.title||title;}result={content:text,version,title};
   }else if(pathname==='/api/prd-ask'&&method==='POST'){
    const status=await history.list(),published=status.entries.find(e=>e.kind==='publish');let text=state.canonical,version='最新草稿';if(data.scope!=='draft'&&published){const record=await history.get(published.id);text=record.entry.content;version='V'+published.version;}
-   const found=searchPrd(text,data.question,{role:data.role,moduleId:data.moduleId,limit:12});let selected,notice='';try{selected=await selectPrdSources(data.question,found.matches);}catch{selected={configured:false,matches:found.matches.slice(0,5)};notice='模型筛选暂不可用，当前展示检索原文。';}
-   result={...found,matches:selected.matches,version,currentHash:status.currentHash,mode:selected.configured?'model-selected-sources':'source-search',notice:[!published&&data.scope!=='draft'?'尚无发布版本，本次检索最新草稿。':'',notice||(!selected.configured?'模型未配置，当前展示检索原文。':'')].filter(Boolean).join(' ')};
+   const found=searchPrd(text,data.question,{role:data.role,moduleId:data.moduleId,limit:12});let selected,notice='';try{selected=await selectPrdSources(data.question,found.matches);}catch{selected={configured:false,matches:found.matches.slice(0,5)};notice='模型回答暂不可用，当前展示检索原文。';}
+   result={...found,matches:selected.matches,answer:selected.answer||[],version,currentHash:status.currentHash,mode:selected.configured?'grounded-answer':'source-search',notice:[!published&&data.scope!=='draft'?'尚无发布版本，本次检索最新草稿。':'',notice||(!selected.configured?'模型未配置，当前展示检索原文。':'')].filter(Boolean).join(' ')};
   }else throw Object.assign(Error('接口不存在'),{status:404});
   if(mutating||(needsMigration&&store.writable)){state.canonical=await fs.readFile(canonical,'utf8');state.history=JSON.parse(await fs.readFile(path.join(directory,'history.json'),'utf8'));state.comments=await comments.list();state.revision=randomUUID();await store.save(state,snapshot.revision);}
   return result;
