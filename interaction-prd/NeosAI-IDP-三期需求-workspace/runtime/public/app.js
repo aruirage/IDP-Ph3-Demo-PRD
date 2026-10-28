@@ -137,7 +137,6 @@ async function renderDocument(content) {
   await renderMarkdownInto($('#markdown'), content);
   await renderMarkdownInto($('#split-markdown'), content);
   reading.applyRole();
-  await collaboration.annotateDocument();
 }
 
 async function renderMarkdownInto(container, content) {
