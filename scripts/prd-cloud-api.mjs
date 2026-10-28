@@ -14,8 +14,8 @@ function initialState(seed){const fingerprint=hash(seed.canonical);return {revis
 const mutations=new Set(['PUT /api/file','POST /api/prd-comments','POST /api/prd-history/publish','POST /api/prd-history/restore']);
 export async function handleCloudApi({pathname,method,query=new URLSearchParams(),data={}},{seed,store}){
  const mutating=mutations.has(method+' '+pathname);
- if(mutating&&!store.writable){const error=Error('尚未连接持久化存储，当前为只读模式；请在 Vercel 连接 Redis 后重试');error.status=503;throw error;}
- if(pathname==='/api/deployment'&&method==='GET')return {cloud:true,writable:store.writable,notice:store.writable?'':'当前为只读预览：连接持久化存储后可编辑、评论和发布。'};
+ if(mutating&&!store.writable){const error=Error('当前为GitHub只读预览，请修改仓库文件并推送更新；网页修改不保存到持久化存储');error.status=503;throw error;}
+ if(pathname==='/api/deployment'&&method==='GET')return {cloud:true,writable:store.writable,notice:store.writable?'':'GitHub 最新版 · 只读预览，内容随仓库推送及部署更新。'};
  const snapshot=await store.load(),state=snapshot.value?structuredClone(snapshot.value):initialState(seed);
  // A repository update refreshes an untouched document; cloud edits remain intact.
  const needsMigration=state.baseHash!==hash(seed.canonical)&&hash(state.canonical)===state.baseHash;
