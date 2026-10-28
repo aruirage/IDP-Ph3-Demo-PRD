@@ -14,6 +14,7 @@ for(const [from,to] of [['marked/lib/marked.esm.js','marked.js'],['mermaid/dist/
 await fs.cp(path.join(workspace,'node_modules/mermaid/dist/chunks'),path.join(output,'vendor/chunks'),{recursive:true});
 const manifest=JSON.parse(await fs.readFile(path.join(workspace,'interaction-prd.json'),'utf8')),files={};
 for(const page of manifest.pages){for(const key of [page.file,page.annotationFile].filter(Boolean))files[key]=await fs.readFile(path.join(workspace,key),'utf8');}
-const seed={canonical:await fs.readFile(path.join(root,'PRD.zh-CN.md'),'utf8'),manifest,files,builtAt:new Date().toISOString()};
+let releaseHistory;try{releaseHistory=JSON.parse(await fs.readFile(path.join(root,'exports/prd-releases/history.json'),'utf8'))}catch(error){if(error.code!=='ENOENT')throw error;}
+const seed={history:releaseHistory,canonical:await fs.readFile(path.join(root,'PRD.zh-CN.md'),'utf8'),manifest,files,builtAt:new Date().toISOString()};
 await fs.mkdir(path.join(root,'.vercel-data'),{recursive:true});await fs.writeFile(path.join(root,'.vercel-data/seed.json'),JSON.stringify(seed));
 console.log('Vercel build: workbench /, standalone prototype /prototype.html, cloud API /api/*');

@@ -10,7 +10,7 @@ import {mergeCanvasManifest} from './canvas-manifest.mjs';
 import {searchPrd} from './prd-search.mjs';
 import {selectPrdSources} from './prd-model-selector.mjs';
 const hash=text=>createHash('sha256').update(text).digest('hex');
-function initialState(seed){const fingerprint=hash(seed.canonical);return {revision:null,baseHash:fingerprint,canonical:seed.canonical,manifest:structuredClone(seed.manifest),comments:[],history:{schemaVersion:1,entries:[{id:'baseline-'+fingerprint,kind:'baseline',createdAt:seed.builtAt,hash:fingerprint,content:seed.canonical,note:'部署时的初始内容'}]}};}
+function initialState(seed){const fingerprint=hash(seed.canonical);return {revision:null,baseHash:fingerprint,canonical:seed.canonical,manifest:structuredClone(seed.manifest),comments:[],history:seed.history||{schemaVersion:1,entries:[{id:'baseline-'+fingerprint,kind:'baseline',createdAt:seed.builtAt,hash:fingerprint,content:seed.canonical,note:'部署时的初始内容'}]}};}
 const mutations=new Set(['PUT /api/file','POST /api/prd-comments','POST /api/prd-history/publish','POST /api/prd-history/restore']);
 export async function handleCloudApi({pathname,method,query=new URLSearchParams(),data={}},{seed,store}){
  const mutating=mutations.has(method+' '+pathname);
