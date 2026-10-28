@@ -1,0 +1,12 @@
+export function createModelSettings({api,anchor}){
+ let active;
+ const dialog=document.createElement('dialog');dialog.className='prd-model-settings';dialog.setAttribute('aria-label','模型设置');dialog.innerHTML='<form><div class="prd-version-heading"><strong>模型设置</strong><button type="button" data-close aria-label="关闭模型设置">×</button></div><label>接口地址<input name="url" type="url" placeholder="https://api.example.com/chat/completions" required></label><label>模型名称<input name="model" placeholder="服务商提供的模型 ID" required maxlength="160"></label><label>API Key<div class="prd-model-key"><input name="key" type="password" autocomplete="off" required><button type="button" data-show>显示</button></div></label><p>使用兼容 OpenAI Chat Completions 的接口。配置仅用于当前标签页，刷新后清空。</p><div data-status role="status"></div><footer><button type="button" class="button" data-test>测试连接</button><button type="submit" class="button primary">应用</button></footer></form>';document.body.append(dialog);
+ const button=document.createElement('button');button.type='button';button.className='button prd-model-settings-button';button.textContent='模型设置';anchor.querySelector('[data-close]').before(button);
+ const form=dialog.querySelector('form'),status=dialog.querySelector('[data-status]'),test=dialog.querySelector('[data-test]');
+ const read=()=>({url:form.elements.url.value.trim(),model:form.elements.model.value.trim(),key:form.elements.key.value.trim()});
+ function open(){for(const field of ['url','model','key'])form.elements[field].value=active?.[field]||'';status.textContent='';form.elements.key.type='password';dialog.querySelector('[data-show]').textContent='显示';dialog.showModal();form.elements.url.focus()}
+ button.onclick=open;dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{form.elements.key.value='';button.focus()});dialog.querySelector('[data-show]').onclick=event=>{const show=form.elements.key.type==='password';form.elements.key.type=show?'text':'password';event.target.textContent=show?'隐藏':'显示'};
+ test.onclick=async()=>{if(!form.reportValidity())return;test.disabled=true;status.textContent='正在测试连接…';try{await api('/api/prd-model-test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({modelConfig:read()})});status.textContent='连接成功'}catch(error){status.textContent='连接失败，请检查接口、模型名称和密钥。'}finally{test.disabled=false}};
+ form.onsubmit=event=>{event.preventDefault();if(!form.reportValidity())return;active=read();button.textContent='模型设置 · 已配置';dialog.close()};
+ return {getConfig:()=>active,open};
+}

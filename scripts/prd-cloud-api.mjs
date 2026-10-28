@@ -1,3 +1,4 @@
+import {userModelOptions,testUserModel} from './prd-user-model.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -16,6 +17,7 @@ export async function handleCloudApi({pathname,method,query=new URLSearchParams(
  const mutating=mutations.has(method+' '+pathname);
  if(mutating&&!store.writable){const error=Error('当前为GitHub只读预览，请修改仓库文件并推送更新；网页修改不保存到持久化存储');error.status=503;throw error;}
  if(pathname==='/api/deployment'&&method==='GET')return {cloud:true,writable:store.writable,notice:store.writable?'':'GitHub 最新版 · 只读预览，内容随仓库推送及部署更新。'};
+ if(pathname==='/api/prd-model-test'&&method==='POST')return testUserModel(data.modelConfig);
  const snapshot=await store.load(),state=snapshot.value?structuredClone(snapshot.value):initialState(seed);
  // A repository update refreshes an untouched document; cloud edits remain intact.
  const needsMigration=state.baseHash!==hash(seed.canonical)&&hash(state.canonical)===state.baseHash;
@@ -47,7 +49,7 @@ export async function handleCloudApi({pathname,method,query=new URLSearchParams(
    if(data.scope==='module'){if(!moduleSections[data.path])throw Error('当前章节不支持下载');text=readSection(text,data.path);title=manifest.modules.find(m=>m.prd===data.path)?.title||title;}result={content:text,version,title};
   }else if(pathname==='/api/prd-ask'&&method==='POST'){
    const status=await history.list(),published=status.entries.find(e=>e.kind==='publish');let text=state.canonical,version='最新草稿';if(data.scope!=='draft'&&published){const record=await history.get(published.id);text=record.entry.content;version='V'+published.version;}
-   const found=searchPrd(text,data.question,{role:data.role,moduleId:data.moduleId,limit:12});let selected,notice='';try{selected=await selectPrdSources(data.question,found.matches);}catch{selected={configured:false,matches:found.matches.slice(0,5)};notice='模型回答暂不可用，当前展示检索原文。';}
+   const found=searchPrd(text,data.question,{role:data.role,moduleId:data.moduleId,limit:12});const userOptions=await userModelOptions(data.modelConfig);let selected,notice='';try{selected=await selectPrdSources(data.question,found.matches,userOptions);}catch{selected={configured:false,matches:found.matches.slice(0,5)};notice='模型回答暂不可用，当前展示检索原文。';}
    result={...found,matches:selected.matches,answer:selected.answer||[],version,currentHash:status.currentHash,mode:selected.configured?'grounded-answer':'source-search',notice:[!published&&data.scope!=='draft'?'尚无发布版本，本次检索最新草稿。':'',notice||(!selected.configured?'模型未配置，当前展示检索原文。':'')].filter(Boolean).join(' ')};
   }else throw Object.assign(Error('接口不存在'),{status:404});
   if(mutating||(needsMigration&&store.writable)){state.canonical=await fs.readFile(canonical,'utf8');state.history=JSON.parse(await fs.readFile(path.join(directory,'history.json'),'utf8'));state.comments=await comments.list();state.revision=randomUUID();await store.save(state,snapshot.revision);}
