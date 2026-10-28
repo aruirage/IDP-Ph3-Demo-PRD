@@ -31,8 +31,7 @@ export function createPrdVersionUi({api,state,getFile,renderDocument,toast}){
    detail.replaceChildren();const actions=document.createElement('div');actions.className='prd-version-detail-actions';actions.append(text('strong',title(result.entry)+' · '+date(result.entry)));
    if(published&&result.entry.note){const notes=text('pre',result.entry.note);notes.className='prd-release-notes';detail.append(notes)}
    if(published){const toggle=text('button',showReleaseDiff?'查看完整正文':'对比上一发布版本');toggle.className='button';toggle.addEventListener('click',()=>showEntry(id,showReleaseDiff?'full':'release'));actions.append(toggle)}
-   const compareButton=text('button',showDraftDiff?'查看历史正文':'与当前草稿对比');compareButton.className='button';compareButton.addEventListener('click',()=>showEntry(id,showDraftDiff?'full':'draft'));
-   const restoreButton=text('button','恢复到此内容');restoreButton.className='button';restoreButton.id='prd-restore-button';restoreButton.disabled=busy;restoreButton.addEventListener('click',()=>restore(id));actions.append(compareButton,restoreButton);detail.append(actions);
+   detail.append(actions);
    if(showReleaseDiff){const base=result.diffBase;detail.append(text('p',base?.kind==='publish'?`V${base.version} → V${result.entry.version}`:`初始记录 → V${result.entry.version}`),renderDiff(base?.content||'',result.entry.content))}
    else if(showDraftDiff){detail.append(text('p','历史内容 → 当前草稿'),renderDiff(result.entry.content,result.current))}
    else{detail.append(text('h3','历史内容'),text('pre',result.entry.content))}
