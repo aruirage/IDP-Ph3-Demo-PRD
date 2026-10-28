@@ -3,7 +3,7 @@ const block=(chapter,from,to)=>({chapter,from,to});
 export const pageSpecs=[
  {id:'master-data',title:'主数据总览与层级关系',parts:[block('6.02'),block('6.04')]},
  {id:'master-columns',title:'主数据列设置',parts:[block('6.02','#### 字段与参数规格'),block('6.02','#### 按钮与启用条件')]},
- {id:'master-sync',title:'API同步配置',parts:[block('6.01','#### 范围说明'),block('6.01','#### 功能点'),block('6.01','#### 外部系统来源绑定与自动执行','| 更新履历 | 规则 |'),block('6.01','#### 每次更新的处理顺序'),block('6.01','#### 异常与边界'),block('6.01','#### 待确认')]},
+ {id:'master-sync',title:'API同步配置',parts:[block('6.01','#### 功能点'),block('6.01','#### 外部系统来源绑定与自动执行','| 更新履历 | 规则 |'),block('6.01','#### 每次更新的处理顺序'),block('6.01','#### 异常与边界'),block('6.01','#### 待确认')]},
  {id:'master-history',title:'更新履历',parts:[block('6.01','| 更新履历 | 规则 |','界面文案：')]},
  {id:'api-settings',title:'外部数据连接',parts:[block('6.01','| 连接与字段配置 | 规则 |','| 来源与字段 |'),block('6.01','| 按钮 | 场景 |','| 有効（启用开关） |'),block('6.01','#### SFDC标准接口依据'),block('6.01','#### SFDC认证与连接测试')]},
  {id:'ocr-confirmation',title:'OCR抽出确认',parts:[block('6.03')]},
