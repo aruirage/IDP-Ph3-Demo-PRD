@@ -60,15 +60,7 @@ select { height:34px; max-width:300px; padding:0 28px 0 10px; border:1px solid v
 .markdown.compact img { max-width:100%; height:auto; }
 .markdown.compact blockquote { margin-inline:0; }
 #inspector-prd { container:inspector-document / inline-size; }
-@container inspector-document (max-width:560px) {
-  .markdown.compact table { display:block; position:relative; }
-  .markdown.compact thead { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-  .markdown.compact tbody { display:block; }
-  .markdown.compact tbody tr { display:block; margin-bottom:14px; border:1px solid var(--hairline); border-radius:4px; }
-  .markdown.compact td { display:grid; grid-template-columns:minmax(64px,28%) minmax(0,1fr); gap:10px; border:0; border-bottom:1px solid var(--hairline); padding:9px 10px; }
-  .markdown.compact td:last-child { border-bottom:0; }
-  .markdown.compact td::before { content:attr(data-column-label); font-weight:600; color:var(--ink); }
-}
+
 .review-layout.expanded { display:block; }
 .review-layout.expanded .prototype-stage { min-height:calc(100vh - 250px); }
 .review-layout.expanded .review-inspector { position:absolute; z-index:10; top:12px; right:12px; bottom:12px; width:min(420px,38vw); height:auto; display:none; box-shadow:0 0 0 1px rgba(0,0,0,.08); }
@@ -186,3 +178,12 @@ body.view-prototype .nav-rail{display:none}body.view-prototype .shell{margin-lef
 /* Keep labels readable in two-column specification tables. */
 .markdown table:has(tr:first-child>th:nth-child(2):last-child) th:first-child,
 .markdown table:has(tr:first-child>th:nth-child(2):last-child) td:first-child{width:7em;min-width:6em;overflow-wrap:normal;word-break:normal}
+
+/* Readable column widths in full-document and split views. */
+.markdown .prd-table-scroll{max-width:100%;min-width:0;overflow-x:auto;margin:18px 0 24px;overscroll-behavior-x:contain;border-radius:4px}
+.markdown .prd-table-scroll:focus-visible{outline:2px solid #84adff;outline-offset:3px}
+.markdown .prd-table-scroll table{display:table;width:100%;max-width:none;table-layout:fixed;margin:0;border-collapse:collapse}
+.markdown .prd-table-scroll thead{display:table-header-group;position:static;width:auto;height:auto;overflow:visible;clip-path:none}
+.markdown .prd-table-scroll tbody{display:table-row-group}.markdown .prd-table-scroll tr{display:table-row}
+.markdown .prd-table-scroll th,.markdown .prd-table-scroll td{display:table-cell;width:auto;min-width:0;padding:10px 12px;white-space:normal;word-break:normal;overflow-wrap:anywhere;vertical-align:top}
+.markdown .prd-table-scroll th{overflow-wrap:normal;background:#f8fafc}.markdown .prd-table-scroll td::before{content:none}

@@ -1,3 +1,4 @@
+import{layoutPrdTables}from'./prd-tables.js';
 import { marked } from '/vendor/marked.js';
 import mermaid from '/vendor/mermaid.js';
 import { enhanceDiagrams } from '/diagram-zoom.js';
@@ -142,12 +143,7 @@ async function renderDocument(content) {
 async function renderMarkdownInto(container, content) {
   if (!container) return;
   container.innerHTML = marked.parse(content);
-  container.querySelectorAll('table').forEach(table => {
-    const headings = [...table.querySelectorAll('thead th')].map(cell => cell.textContent.trim());
-    table.querySelectorAll('tbody tr').forEach(row => [...row.children].forEach((cell,index) => {
-      cell.dataset.columnLabel = headings[index] || '';
-    }));
-  });
+  layoutPrdTables(container);
   container.querySelectorAll('pre > code.language-mermaid').forEach((code) => {
     const div = document.createElement('div'); div.className = 'mermaid'; div.textContent = code.textContent; code.parentElement.replaceWith(div);
   });
