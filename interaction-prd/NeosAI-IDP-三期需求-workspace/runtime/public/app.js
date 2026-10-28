@@ -54,9 +54,7 @@ async function boot() {
 
 function syncDeploymentUi(){
   const readonly=state.manifest.deployment?.cloud&&!state.manifest.deployment.writable;
-  let notice=document.querySelector('.prd-deployment-notice');
-  if(readonly){if(!notice){notice=document.createElement('div');notice.className='prd-deployment-notice';document.querySelector('.topbar').after(notice)}notice.textContent='GitHub 最新版 · 发布记录与差异随仓库更新。'}else notice?.remove();
-  $('#edit-button').disabled=!!readonly;$('#edit-button').title=readonly?'请修改仓库文件并推送更新':'';
+  document.querySelector('.prd-deployment-notice')?.remove();
 }
 
 function moduleKind(module) { return module.kind || 'prd'; }
@@ -496,7 +494,7 @@ function bind() {
   $$('.inspector-tab').forEach((button) => button.addEventListener('click', () => setInspectorTab(button.dataset.inspector)));
   $('#prototype-zoom-in').onclick=()=>{state.prototypeZoom=Math.min(2,state.prototypeZoom+.1);resizePrototype()};$('#prototype-zoom-out').onclick=()=>{state.prototypeZoom=Math.max(.5,state.prototypeZoom-.1);resizePrototype()};
   $('#process-toggle').addEventListener('click', toggleProcessModules);
-  $('#edit-button').addEventListener('click', openEditor);  $('#editor-file').addEventListener('change', loadEditorFile); $('#save-editor').addEventListener('click', (event) => { event.preventDefault(); saveEditor().catch(error=>toast(error.message)); });
+  $('#edit-button')?.addEventListener('click', openEditor);  $('#editor-file').addEventListener('change', loadEditorFile); $('#save-editor').addEventListener('click', (event) => { event.preventDefault(); saveEditor().catch(error=>toast(error.message)); });
   $('#editor-content').addEventListener('input', () => { state.editorDirty = true; });
   $('#export-button').addEventListener('click',()=>exportModule().catch(error=>toast(error.message)));
   $('#capture-prototype-button').addEventListener('click',captureCurrentPrototype);
