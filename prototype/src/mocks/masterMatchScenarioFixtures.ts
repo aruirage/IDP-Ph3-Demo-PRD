@@ -2,7 +2,7 @@ import type { OcrExtractionField, OcrMasterMatchCandidate } from './ocrExtractio
 import { customerIcdSample } from './customerIcdSample'
 const box={top:20,left:30,width:30,height:2}
 function field(id:string,label:string,records:number[],scores:number[],extra:Partial<OcrExtractionField>={}):OcrExtractionField{
- const name=customerIcdSample[records[0]??0][2];const original=name.includes('悪性')?name.replace('悪性','の悪性'):name;
+ const name=customerIcdSample[records[0]??0][2];const original=name.includes('膜')?name.replace('膜','模'):name;
  return {id,section:'マスタ照合ケース',label,value:original,ocrOriginalValue:original,confidence:97,required:true,bbox:{...box},masterDataId:'master-disease',masterDataColumnId:'col-d-name',masterCodeColumnId:'col-d-code',masterMatchCandidates:records.map((index,i)=>candidate(id,index,'hybrid',scores[i])),...extra}
 }
 function candidate(id:string,index:number,strategy:OcrMasterMatchCandidate['strategy'],score?:number):OcrMasterMatchCandidate{
