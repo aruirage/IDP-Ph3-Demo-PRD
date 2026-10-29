@@ -2,7 +2,8 @@ import type { OcrExtractionField, OcrMasterMatchCandidate } from './ocrExtractio
 import { customerIcdSample } from './customerIcdSample'
 const box={top:20,left:30,width:30,height:2}
 function field(id:string,label:string,records:number[],scores:number[],extra:Partial<OcrExtractionField>={}):OcrExtractionField{
- return {id,section:'マスタ照合ケース',label,value:'OCR原文 '+id,ocrOriginalValue:'OCR原文 '+id,confidence:97,required:true,bbox:{...box},masterDataId:'master-disease',masterDataColumnId:'col-d-name',masterCodeColumnId:'col-d-code',masterMatchCandidates:records.map((index,i)=>candidate(id,index,'hybrid',scores[i])),...extra}
+ const name=customerIcdSample[records[0]??0][2];const original=name.includes('悪性')?name.replace('悪性','の悪性'):name;
+ return {id,section:'マスタ照合ケース',label,value:original,ocrOriginalValue:original,confidence:97,required:true,bbox:{...box},masterDataId:'master-disease',masterDataColumnId:'col-d-name',masterCodeColumnId:'col-d-code',masterMatchCandidates:records.map((index,i)=>candidate(id,index,'hybrid',scores[i])),...extra}
 }
 function candidate(id:string,index:number,strategy:OcrMasterMatchCandidate['strategy'],score?:number):OcrMasterMatchCandidate{
  const record=customerIcdSample[index]
@@ -13,9 +14,10 @@ function bankGroup(id:string,label:string,score:number):OcrExtractionField[]{
  return [bank,{id:id+'-branch',section:bank.section,label:'支店名（同一グループ）',value:'瑞穂通',ocrOriginalValue:'瑞穂通',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:id}]
 }
 function diseaseGroup(id:string,label:string,records:number[],scores:number[],codes:number[]=[],trusted?:boolean):OcrExtractionField[]{
+ const code=customerIcdSample[codes[0]??records[0]??0][1];const ocrCode=code;
  const main=field(id,label,records,scores,{phase3ModelTrusted:trusted,masterMatchCodeFieldRefs:[{fieldId:id,label:'傷病名',masterColumnId:'col-d-name'},{fieldId:id+'-icd',label:'ICD10',masterColumnId:'col-d-code'}]})
  main.masterMatchCandidates!.unshift(...codes.map(index=>candidate(id,index,'code')))
- return [main,{id:id+'-icd',section:main.section,label:'ICD10（同一グループ）',value:'OCR code',ocrOriginalValue:'OCR code',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:id}]
+ return [main,{id:id+'-icd',section:main.section,label:'ICD10（同一グループ）',value:ocrCode,ocrOriginalValue:ocrCode,confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:id}]
 }
 export function autoAdoptScenarioFields():OcrExtractionField[]{
  const code1=field('auto-code-check','A1 コード一致：Top 3を参考にモデルが信頼と判定',[0,1,10],[88,85,81],{phase3ModelTrusted:true});code1.masterMatchCandidates!.unshift(candidate(code1.id,0,'code'))
@@ -45,7 +47,7 @@ export function manualReviewScenarioFields():OcrExtractionField[]{
  const siteId='review-parent-fields-site'
  parentFields[0].masterMatchCodeFieldRefs!.push({fieldId:siteId,label:'特定部位',masterColumnId:'col-d-site'})
  for(const item of parentFields[0].masterMatchCandidates!){const record=customerIcdSample.find(row=>row[0]===item.sourceRecordId)!;item.linkedValues![siteId]=record[5]}
- parentFields.push({id:siteId,section:parentFields[0].section,label:'特定部位（M8と同一グループ）',value:'OCR部位',ocrOriginalValue:'OCR部位',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:parentFields[0].id})
+ parentFields.push({id:siteId,section:parentFields[0].section,label:'特定部位（M8と同一グループ）',value:'皮膚',ocrOriginalValue:'皮膚',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:parentFields[0].id})
  const snapshots=(id:string,label:string,error?:string)=>field(id,label,[0,1],[88,85],{phase3Matched:true,masterMatchConfirmRule:'low-similarity',masterMatchError:error})
  return [field('review-single','M1 類似度：候補1件、閾値未満',[0],[88]),field('review-tie','M2 最高同率でも閾値未満・階層なし',[0,1,10],[88,88,81],{masterCodeColumnId:'not-bound'}),untrusted,field('review-flat','M4 階層ファイルなし：遡及不可',[0,1],[88,85],{masterCodeColumnId:'not-bound'}),field('review-unmapped','M5 候補のコードに公式階層がない',[0,1],[88,85],{masterMatchCandidates:[candidate('review-unmapped',0,'hybrid',88),{value:'階層未設定の傷病名',strategy:'hybrid',similarityScore:85,linkedValues:{'review-unmapped':'階層未設定の傷病名','review-unmapped-icd':'X999'}}]}),field('review-no-parent','M6 最上位まで遡及しても共通父級なし',[0,14],[88,85]),...bankGroup('review-bank','M7 グループ：候補を選んで一括確認',88),...parentFields,field('review-qualified-tie','M13 類似度：最高点が閾値以上でも同率なら確認',[1,0,10],[93,93,81]),...diseaseGroup('review-group-qualified-tie','M14 グループ：最高点が閾値以上でも同率なら確認',[1,0,10],[93,93,81]),snapshots('review-cycle','M9 父子関係の欠落・循環で遡及不可（境界状態）'),field('review-code-multi-flat','M12 コード複数一致・階層なし',[0,1],[88,85],{masterCodeColumnId:'not-bound',masterMatchCandidates:[candidate('review-code-multi-flat',0,'code'),candidate('review-code-multi-flat',1,'code'),candidate('review-code-multi-flat',0,'hybrid',88),candidate('review-code-multi-flat',1,'hybrid',85)]}),field('review-no-candidate','コード検索・類似度検索ともに候補なし',[],[],{confidence:97})]
 }
