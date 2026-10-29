@@ -30,14 +30,14 @@ export function autoAdoptScenarioFields():OcrExtractionField[]{
  const flatCode=field('auto-flat-code','A17 階層なし：コード校合で採用',[0,1],[88,85],{masterCodeColumnId:'not-bound',phase3ModelTrusted:true});flatCode.masterMatchCandidates!.unshift(candidate(flatCode.id,0,'code'))
  const cases:OcrExtractionField[] = [
  field('auto-parent-customer-duplicates','A21 父級codeに顧客記録が複数でも公式ノードを採用',[1,2],[88,85]),
- field('auto-multiple-qualified','A11 類似度：複数達標から最高分を採用',[0,1,10],[96,94,91]),
+ field('auto-multiple-qualified','A11 類似度：複数達標から最高点を採用',[0,1,10],[96,94,91]),
  ...diseaseGroup('auto-group-code','A12 グループ：Top 3を含めモデルが信頼と判定',[0,1,10],[88,85,81],[0],true),
  ...diseaseGroup('auto-group-code-model','A13 グループ：コードのモデル校合で採用',[14,15,16],[88,85,81],[0],true),
  ...diseaseGroup('auto-group-sim-parent','A14 グループ：類似度候補から父級を採用',[1,2,3],[88,85,81]),
  field('auto-flat-sim','A16 階層なし：類似度で採用',[0,1,10],[96,85,81],{masterCodeColumnId:'not-bound'}),flatCode,
  field('auto-single-qualified','A18 類似度：候補1件、閾値で採用',[0],[90]),emptyTop,
  field('auto-perfect','A20 類似度：100%で採用',[0,1],[100,85]),
- both,code1,code2,field('auto-similar','A3 類似度：最高分が閾値を超える',[0,1,10],[96,86,81]),field('auto-boundary','A4 類似度：閾値と同じ90%で採用',[0,1,10],[90,86,81]),parentCode,field('auto-parent-sim','A6 類似度：低い複数候補から共通父級へ遡及',[0,1,2],[88,85,81]),...bankGroup('auto-bank','A7 グループ：組み合わせ類似度で一括採用',96),group,{id:'auto-parent-group-icd',section:group.section,label:'ICD10（A8と同一グループ）',value:'C69',ocrOriginalValue:'C69',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:group.id}]
+ both,code1,code2,field('auto-similar','A3 類似度：最高点が閾値を超える',[0,1,10],[96,86,81]),field('auto-boundary','A4 類似度：閾値と同じ90%で採用',[0,1,10],[90,86,81]),parentCode,field('auto-parent-sim','A6 類似度：低い複数候補から共通父級へ遡及',[0,1,2],[88,85,81]),...bankGroup('auto-bank','A7 グループ：組み合わせ類似度で一括採用',96),group,{id:'auto-parent-group-icd',section:group.section,label:'ICD10（A8と同一グループ）',value:'C69',ocrOriginalValue:'C69',confidence:97,required:true,bbox:{...box},masterMatchLinkedTo:group.id}]
  const number=(item:OcrExtractionField)=>Number((item.masterMatchLinkedTo?cases.find(parent=>parent.id===item.masterMatchLinkedTo)?.label:item.label)?.match(/^A(\d+)/)?.[1]||99)
  return cases.sort((a,b)=>number(a)-number(b)||Number(!!a.masterMatchLinkedTo)-Number(!!b.masterMatchLinkedTo))
 }
