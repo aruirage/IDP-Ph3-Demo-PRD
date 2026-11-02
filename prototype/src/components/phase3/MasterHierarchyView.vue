@@ -118,7 +118,7 @@ watch(missingPage,()=>{selectedIds.value=[];addVisible.value=false;retainedIds.v
 watch([keyword,hierarchyTab],()=>{addVisible.value=false;retainedIds.value=[]})
 watch(classifiedPage,()=>nextTick(()=>setTreeExpanded(!allCollapsed.value)))
 
-function download(){const blob=new Blob(['\uFEFF階層,code,名称\n1,B37,カンジダ症\n2,B37.0,カンジダ性口内炎\n2,B37.1,肺カンジダ症\n'],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='hierarchy-template.csv';a.click();URL.revokeObjectURL(url)}
+function download(){const blob=new Blob(["﻿階層,code,名称\n1,A08,ウイルス性及びその他の明示された腸管感染症\n2,A085,その他の明示された腸管感染症\n3,A085a,その他の明示された腸管感染症；伝染性下痢症\n3,A085b,その他の明示された腸管感染症；その他\n1,A77,紅斑熱［マダニ媒介リケッチア症］\n2,A778,その他の紅斑熱\n3,A778a,日本紅斑熱＜リケッチア　ジャポニカによる紅斑熱＞\n3,A778b,その他の紅斑熱\n1,B37,カンジダ症\n2,B370,カンジダ性口内炎\n"],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='hierarchy-template.csv';a.click();URL.revokeObjectURL(url)}
 watch(()=>props.master.id,()=>{undoAssignment.value=null;loadDraft();hierarchyTab.value='classified';keyword.value='';addVisible.value=false;selectedIds.value=[]},{immediate:true})
 watch(binding,()=>{addVisible.value=false;selectedIds.value=[];allCollapsed.value=false})
 </script>
