@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { customerIcdSample } from './customerIcdSample'
+import { officialIcdSample } from './officialIcdSample'
 import { t } from '@/i18n/translate'
 
 export const MAX_MASTER_COLUMNS = 10
@@ -125,6 +126,24 @@ function createEmptyMasterShell(name: string, id: string): MasterDataDefinition 
   }
 }
 
+// Shared by the master table and hierarchy view; these are additional input records,
+// not official hierarchy nodes. Include repeated codes at the first two levels.
+const hierarchyInputDemoCodes = ['A08', 'A08', 'A085', 'A085', 'A085a', 'A085b', 'A81', 'A81', 'A810', 'A810']
+const hierarchyInputDemoRows: MasterDataRow[] = hierarchyInputDemoCodes.map((code, index) => {
+  const official = officialIcdSample.find(record => record[1] === code)!
+  return {
+    id: `hierarchy-input-demo-${index + 1}`,
+    sourceRecordId: `hierarchy-input-demo-${index + 1}`,
+    values: {
+      'col-d-code': code,
+      'col-d-name': `${official[2]}（入力例${index + 1}）`,
+      'col-d-disease': '', 'col-d-disease-famix': '',
+      'col-d-site': '', 'col-d-site-famix': ''
+    },
+    vectorizationStatus: 'completed', updatedAt: '2026-11-03 09:00:00'
+  }
+})
+
 export const masterDataDefinitions = ref<MasterDataDefinition[]>([
   createBankDictionaryMaster(),
   createEmptyMasterShell('マスタ追加2', 'master-add-2'),
@@ -144,12 +163,12 @@ export const masterDataDefinitions = ref<MasterDataDefinition[]>([
       { id: 'col-d-site-famix', label: '特定部位（Famix）', isQueryCode: false }
     ],
     // Business values come from the customer export. Version timestamps are demo fixtures.
-    rows: customerIcdSample.slice(0,50).map((record,index)=>({
+    rows: [...customerIcdSample.slice(0,50).map((record,index)=>({
       id:record[0],sourceRecordId:record[0],
       sourceUpdatedAt:index<3?'2026-10-21T00:00:00Z':'2026-10-22T00:00:00Z',
       values:{'col-d-code':record[1],'col-d-name':record[2]+(index<3?'（旧版・デモ）':''),'col-d-disease':record[3],'col-d-disease-famix':record[4],'col-d-site':record[5],'col-d-site-famix':record[6]},
       vectorizationStatus:'completed' as const,updatedAt:'2026-10-22 09:00:00'
-    }))
+    })), ...hierarchyInputDemoRows]
   },
   {
     id: 'master-procedure',
