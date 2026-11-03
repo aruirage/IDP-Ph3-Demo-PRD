@@ -238,7 +238,7 @@ function createMasterSimilarityDemoFields():OcrExtractionField[]{
   {id:'d-demo-adopt',label:'傷病名（類似度一致）',original:'脈絡膜の悪性黒色腫',records:[0,1,10],scores:[96,86,80]},
   {id:'d-demo-candidates',label:'傷病名（複数候補）',original:'悪性腫瘍',records:[0,10,20],scores:[88,85,81]},
   {id:'d-demo-parent',label:'傷病名（上位分類を採用）',original:'眼の悪性腫瘍',records:[0,1,2],scores:[88,85,81]},
-  {id:'d-demo-tie',label:'傷病名（同率候補）',original:'毛様体の悪性腫瘍',records:[1,2,3],scores:[93,93,86]}
+  {id:'d-demo-tie',label:'傷病名（複数候補）',original:'毛様体の悪性腫瘍',records:[1,2,3],scores:[93,91,86]}
  ]
  return scenarios.map((demo,index)=>({id:demo.id,section:'診断内容',label:demo.label,value:demo.original,ocrOriginalValue:demo.original,confidence:97,required:true,bbox:{top:28+index*3,left:32,width:28,height:2.2},masterDataId:'master-disease',masterDataColumnId:'col-d-name',masterCodeColumnId:'col-d-code',masterMatchCandidates:demo.records.map((record,i)=>({value:customerIcdSample[record][2],strategy:'hybrid' as const,similarityScore:demo.scores[i],linkedValues:{[demo.id]:customerIcdSample[record][2],[demo.id+'-icd']:customerIcdSample[record][1]}}))}))
 }

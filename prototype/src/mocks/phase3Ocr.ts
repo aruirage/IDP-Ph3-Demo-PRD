@@ -48,7 +48,7 @@ export function applyPhase3Once(fields:OcrExtractionField[],docTypeName?:string)
  else if(candidates.length){
   const highest=candidates[0].similarityScore||0
   if(highest>=(review?.autoAdoptThreshold??90)){
-   if(candidates.filter(candidate=>candidate.similarityScore===highest).length===1)adopted=candidates[0]
+   adopted=candidates[0]
   }else if(candidates.length>1&&binding?.nodes.length)adopted=commonOfficial(candidates)
  }
  field.masterReviewEnabled=review?.masterReviewEnabled??true
