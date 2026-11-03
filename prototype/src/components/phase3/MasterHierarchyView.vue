@@ -106,7 +106,8 @@ async function upload(){
 }
 const classifiedPage=ref(1),missingPage=ref(1)
 const rootGroups=computed(()=>visibleNodes.value.map(row=>[row]))
-function countLeafNodes(rows:HierarchyRow[]):number{return rows.filter(r=>r.kind==='official').reduce((n,row)=>n+(row.children?.some(c=>c.kind==='official')?countLeafNodes(row.children):1),0)}
+// Input records are terminal rows; official nodes only organize their hierarchy.
+function countLeafNodes(rows:HierarchyRow[]):number{return rows.reduce((count,row)=>count+(row.kind==='customer'?1:0)+countLeafNodes(row.children||[]),0)}
 const leafCount=computed(()=>countLeafNodes(visibleNodes.value))
 const pagedNodes=computed(()=>rootGroups.value.slice((classifiedPage.value-1)*10,classifiedPage.value*10).flat())
 const pageLeafCount=computed(()=>countLeafNodes(pagedNodes.value))
