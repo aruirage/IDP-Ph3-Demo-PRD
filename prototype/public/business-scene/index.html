@@ -25,7 +25,7 @@
     />
   </noscript>
   <link rel="stylesheet" href="vendor/element-plus-2.9.1.css" />
-  <link rel="stylesheet" href="style.css?v=ec41cd19a300" />
+  <link rel="stylesheet" href="style.css?v=945766c48de5" />
   <style>[v-cloak] { display: none !important; }</style>
 <style>
 .global-topbar,.global-nav{display:none!important}
@@ -1604,13 +1604,29 @@
               </div>
                 </section>
 
+<section class="wf-setup-step1-section">
+                  <section class="wf-setup-docs-panel scene-business-keys" aria-label="業務キー">
+                    <div class="wf-step-card-head"><span class="wf-step-card-index">3</span><inspector-title :title="t('業務キー')"></inspector-title></div>
+                    <div v-for="index in [0,1]" :key="index" class="inspector-field-row" style="margin-top:16px">
+                      <label :for="'scene-business-key-'+index">{{ t(index===0?'業務キー1':'業務キー2') }}</label>
+                      <div class="scene-business-key-controls" style="display:flex;gap:12px;flex-wrap:wrap">
+                        <el-select :id="'scene-business-key-'+index" :model-value="getSceneBusinessKey(index).docType" @change="value=>setSceneBusinessKeyDoc(index,value)" :aria-label="t(index===0?'業務キー1':'業務キー2')+' '+t('帳票を選択')" clearable filterable :placeholder="t('帳票を選択')" style="flex:1;min-width:180px">
+                          <el-option v-for="doc in sceneSetupDraft.documents" :key="doc.type" :value="doc.type" :label="getDocDisplayLabel(doc.type)" />
+                        </el-select>
+                        <el-select :model-value="getSceneBusinessKey(index).field" @change="value=>setSceneBusinessKeyField(index,value)" :aria-label="t(index===0?'業務キー1':'業務キー2')+' '+t('フィールドを選択')" :disabled="!getSceneBusinessKey(index).docType" clearable filterable :placeholder="t('フィールドを選択')" style="flex:1;min-width:180px">
+                          <el-option v-for="field in getSceneSetupFieldOptions(getSceneBusinessKey(index).docType)" :key="field" :value="field" :label="field" :disabled="sceneBusinessKeyFieldDisabled(index,field)" />
+                        </el-select>
+                      </div>
+                    </div>
+                  </section>
+</section>
                 <section class="wf-setup-step1-section">
               <div class="wf-setup-aggregation-stack">
               <div class="wf-setup-links-section">
                 <div class="wf-setup-links-grid">
                   <div class="wf-setup-left-panel">
                     <div class="wf-step-card-head">
-                      <span class="wf-step-card-index">3</span>
+                      <span class="wf-step-card-index">4</span>
                       <inspector-title title="案件集約ルール" :hint="localizedInspectorHints.docFieldLinks"></inspector-title>
                       <span class="wf-step-card-spacer"></span>
                       <el-button
@@ -4251,9 +4267,9 @@
   <script src="vendor/vue-3.5.43.global.prod.js"></script>
   <script src="vendor/element-plus-2.9.1.full.min.js"></script>
   <script src="vendor/element-plus-icons-vue-2.3.1.iife.min.js"></script>
-  <script src="scripts/workflow-core.js?v=ec41cd19a300"></script>
-  <script src="scripts/mock-data.js?v=ec41cd19a300"></script>
-  <script src="scripts/scene-config.js?v=ec41cd19a300"></script>
-  <script src="main.js?v=ec41cd19a300"></script>
+  <script src="scripts/workflow-core.js?v=945766c48de5"></script>
+  <script src="scripts/mock-data.js?v=945766c48de5"></script>
+  <script src="scripts/scene-config.js?v=945766c48de5"></script>
+  <script src="main.js?v=945766c48de5"></script>
 </body>
 </html>

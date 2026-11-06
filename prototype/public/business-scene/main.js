@@ -3,6 +3,7 @@ const WF_CANONICAL_LAYOUT_KEY = 'neosai-idp-wf-canonical-layout-v27';
 const appOptions = {
   setup() {
     
+    const businessKeyLabels = {'帳票を選択':'选择账票','フィールドを選択':'选择字段','業務キー':'业务键','業務キー1':'业务键1','業務キー2':'业务键2','帳票のフィールドを選択':'选择账票字段','業務キーを2件選択してください':'请选择两个业务键','業務キーには異なるフィールドを選択してください':'两个业务键不能选择同一字段','関連帳票の有効なフィールドを選択してください':'请选择关联账票中的有效字段'};
     const storedUiLanguage = new URLSearchParams(location.search).get('lang') || localStorage.getItem('neosai-idp-ui-language');
     const uiLanguage = ref(storedUiLanguage === 'zh' ? 'zh' : 'ja');
     window.addEventListener('message', event => {
@@ -108,6 +109,7 @@ const appOptions = {
       documents: [],
       mainDocType: '',
       mainKey: '',
+      businessKeys: ['', ''],
       docFieldLinks: [],
       aggregateRuleSettings: {},
     });
@@ -1254,6 +1256,7 @@ const appOptions = {
       .filter(Boolean);
 
     function translateUiString(value) {
+      if(businessKeyLabels[value])return businessKeyLabels[value];
       let result = String(value || '');
       if (!result) return result;
       // 无日文假名/汉字时跳过，避免对每个文本节点做 900+ 次替换
@@ -8899,6 +8902,7 @@ const appOptions = {
       sceneSetupDraft.documents = [];
       sceneSetupDraft.mainDocType = '';
       sceneSetupDraft.mainKey = '';
+      sceneSetupDraft.businessKeys = ['', ''];
       sceneSetupDraft.docFieldLinks = [];
       sceneSetupDraft.aggregateRuleSettings = {};
       resetSceneSetupNetworkExpandedDocs();
@@ -8909,6 +8913,7 @@ const appOptions = {
       resetSceneSetupNetworkExpandedDocs();
       sceneSetupDraft.sceneId = sceneId;
       sceneSetupDraft.name = data.scene?.name || sceneName || '新規シーン';
+      sceneSetupDraft.businessKeys = [0, 1].map(index => { const key=data.scene?.businessKeys?.[index];return key?.docType && key?.field ? JSON.stringify([key.docType,key.field]) : ''; });
       sceneSetupDraft.description = data.scene?.description || '';
       sceneSetupDraft.documents = normalizeSceneDocuments(cloneJson(data.scene?.documents || []));
       sceneSetupDraft.mainDocType = getSceneMainDocType(data.scene);
@@ -8955,6 +8960,7 @@ const appOptions = {
         documents: documents.map((doc) => doc.type),
         mainDocType: payload.mainDocType || '',
         mainKey: payload.mainKey || '',
+        businessKeys: payload.businessKeys || [],
         docFieldLinks: links,
       });
     }
@@ -8966,6 +8972,7 @@ const appOptions = {
         documents: sceneSetupDraft.documents,
         mainDocType: sceneSetupDraft.mainDocType,
         mainKey: sceneSetupDraft.mainKey,
+        businessKeys: sceneSetupDraft.businessKeys,
         docFieldLinks: sceneSetupDraft.docFieldLinks,
       });
     }
@@ -8977,6 +8984,7 @@ const appOptions = {
         documents: data.scene?.documents,
         mainDocType: getSceneMainDocType(data.scene),
         mainKey: data.scene?.primaryKey,
+        businessKeys: [0,1].map(index=>{const key=data.scene?.businessKeys?.[index];return key?.docType && key?.field ? JSON.stringify([key.docType,key.field]) : ''; }),
         docFieldLinks: data.scene?.docFieldLinks,
       });
     }
@@ -8993,6 +9001,7 @@ const appOptions = {
       data.scene.mainDocTypes = sceneSetupDraft.mainDocType ? [sceneSetupDraft.mainDocType] : [];
       data.scene.aggregateDocType = sceneSetupDraft.mainDocType;
       data.scene.primaryKey = sceneSetupDraft.mainKey || '';
+      data.scene.businessKeys = sceneSetupDraft.businessKeys.map(value => {if(!value)return null;const [docType,field]=JSON.parse(value);return {docType,field};});
       data.scene.masterlessPolicy = SCENE_MATCHING_DEFAULTS.masterlessPolicy;
       data.scene.supplementPolicy = SCENE_MATCHING_DEFAULTS.supplementPolicy;
       data.scene.docFieldLinks = normalizeDocFieldLinks(
@@ -9261,8 +9270,10 @@ const appOptions = {
     }
 
     function validateSceneAggregateDraft(draft) {
+      const businessKeyError=validateSceneBusinessKeys(draft,true);
+      if(businessKeyError)return businessKeyError;
       if (!draft.mainDocType) return '主帳票を1件選択してください';
-      if (!draft.mainKey) return '業務キーを選択してください';
+      if (!draft.mainKey) return '主帳票の主キーを選択してください';
       return getSceneLinkValidationError(
         draft.documents,
         draft.mainDocType,
@@ -9291,6 +9302,8 @@ const appOptions = {
     }
 
     function persistSceneSetupDraft(options = {}) {
+      const businessKeyError=validateSceneBusinessKeys(sceneSetupDraft,!!options.validate);
+      if(businessKeyError){ElementPlus.ElMessage.warning(businessKeyError);return false;}
       if (options.validate) {
         if (!sceneSetupDraft.documents.length) {
           ElementPlus.ElMessage.warning('関連帳票を1件以上追加してください');
@@ -9537,6 +9550,27 @@ const appOptions = {
       clearSceneSetupLinkCheckDisplay();
     }
 
+    const sceneBusinessKeyOptions = computed(() => sceneSetupDraft.documents.flatMap(doc =>
+      getSceneSetupFieldOptions(doc.type).map(field => ({value:JSON.stringify([doc.type,field]),label:getDocDisplayLabel(doc.type)+' / '+field}))
+    ));
+    function getSceneBusinessKey(index) {
+      try { const [docType,field]=JSON.parse(sceneSetupDraft.businessKeys[index]||'[]');return {docType:docType||'',field:field||''}; } catch{return {docType:'',field:''};}
+    }
+    function setSceneBusinessKeyDoc(index,docType) {sceneSetupDraft.businessKeys[index]=docType?JSON.stringify([docType,'']):'';}
+    function setSceneBusinessKeyField(index,field) {const docType=getSceneBusinessKey(index).docType;sceneSetupDraft.businessKeys[index]=docType?JSON.stringify([docType,field||'']):'';}
+    function sceneBusinessKeyFieldDisabled(index,field) {const other=getSceneBusinessKey(1-index);return other.docType===getSceneBusinessKey(index).docType && other.field===field;}
+    function validateSceneBusinessKeys(draft,required) {
+      const keys=draft.businessKeys || ['', ''];
+      if(required && (keys.length!==2 || keys.some(value=>!value)))return t('業務キーを2件選択してください');
+      if(keys[0] && keys[0]===keys[1])return t('業務キーには異なるフィールドを選択してください');
+      const valid=new Set(sceneBusinessKeyOptions.value.map(option=>option.value));
+      if(keys.some(value=>value && !valid.has(value)))return t('関連帳票の有効なフィールドを選択してください');
+      return '';
+    }
+    watch(sceneBusinessKeyOptions, options => {
+      const valid=new Set(options.map(option=>option.value));
+      sceneSetupDraft.businessKeys=sceneSetupDraft.businessKeys.map(value=>valid.has(value)?value:'');
+    });
     function getSceneSetupFieldOptions(docType) {
       return getDocSchema(docType).fields || [];
     }
@@ -13739,6 +13773,8 @@ const appOptions = {
       sceneSetupActiveTab,
       sceneSetupMode,
       sceneSetupDraft,
+      sceneBusinessKeyOptions,
+      getSceneBusinessKey, setSceneBusinessKeyDoc, setSceneBusinessKeyField, sceneBusinessKeyFieldDisabled,
       MAX_DOCS,
       configReuseDialogVisible,
       configReuseDraft,

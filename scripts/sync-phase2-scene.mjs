@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {addSceneBusinessKeys} from './phase2-scene-business-keys.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
@@ -20,8 +21,10 @@ main=main.replace("const uiLanguage = ref(storedUiLanguage === 'zh' ? 'zh' : 'ja
     });`);
 main=main.replace('function openFixedDocSettings(typeId, stepOverride, options = {}) {',`function openFixedDocSettings(typeId, stepOverride, options = {}) {
       if(window.parent !== window){window.parent.postMessage({type:'neosai:open-doc-types'},location.origin);return;}`);
-await fs.writeFile(path.join(target,'main.js'),main);
+
 let html=(await fs.readFile(path.join(source,'index.html'),'utf8')).replace(/ data-page-node-id="[^"]*"/g,'');
+({main,html}=addSceneBusinessKeys(main,html));
+await fs.writeFile(path.join(target,'main.js'),main);
 const version=createHash('sha256').update(html+main+await fs.readFile(path.join(target,'style.css'),'utf8')).digest('hex').slice(0,12);
 html=html.replace(/\?v=\d+/g,'?v='+version).replace('</head>',`<style>
 .global-topbar,.global-nav{display:none!important}

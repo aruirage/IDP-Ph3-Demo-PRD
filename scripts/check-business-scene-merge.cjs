@@ -16,6 +16,11 @@ const {chromium,browserLaunchOptions}=require('./browser-test-runtime.cjs');
   const content=await frame.locator('body').innerText();
   assert.match(content,/案件集約ルール/);
   assert.match(content,/関連プレビュー/);
+  for(const [index,label] of [[0,'保険請求書'],[1,'請求番号'],[2,'保険請求書'],[3,'証券番号']]){
+   const control=frame.locator('.scene-business-keys .el-select').nth(index);await control.click();
+   const id=await control.locator('[role="combobox"]').getAttribute('aria-controls');
+   const list=frame.locator('[id="'+id+'"]');await list.getByText(label,{exact:true}).click();await list.waitFor({state:'hidden'});
+  }
   // Exercise the same step transitions as the scene editor, bypassing draft validation.
   for(const [step,label] of [[2,'開始'],[3,'通知ルール追加'],[4,'エクスポート対象']]){
    await frame.evaluate(step=>window.__NEOS_PRD_CAPTURE__.openWorkflowStep(step),step);
