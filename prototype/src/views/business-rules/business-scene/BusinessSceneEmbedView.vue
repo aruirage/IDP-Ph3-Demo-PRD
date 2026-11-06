@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { BUSINESS_SCENE_WORKFLOW_URL } from '@/constants/businessSceneWorkflow'
 
-const workflowUrl = BUSINESS_SCENE_WORKFLOW_URL
+const { locale } = useI18n()
+const router = useRouter()
+const frame = ref<HTMLIFrameElement>()
+const initialLocale = locale.value
+const workflowUrl = BUSINESS_SCENE_WORKFLOW_URL + '?lang=' + (initialLocale === 'zh-CN' ? 'zh' : 'ja')
+function handleMessage(event: MessageEvent) {
+  if(event.origin !== location.origin || event.source !== frame.value?.contentWindow)return
+  if(event.data?.type === 'neosai:open-doc-types')router.push('/business-rules/doc-types')
+}
 const loadTimedOut = ref(false)
 
 let loadTimer: ReturnType<typeof setTimeout> | null = null
@@ -25,10 +35,12 @@ function startLoadTimer() {
 function handleIframeLoad() {
   clearLoadTimer()
   loadTimedOut.value = false
+  frame.value?.contentWindow?.postMessage({type:'neosai:scene-language',locale:locale.value},location.origin)
 }
 
-onMounted(startLoadTimer)
-onBeforeUnmount(clearLoadTimer)
+watch(locale, value => frame.value?.contentWindow?.postMessage({type:'neosai:scene-language',locale:value},location.origin))
+onMounted(() => { startLoadTimer(); window.addEventListener('message',handleMessage) })
+onBeforeUnmount(() => { clearLoadTimer(); window.removeEventListener('message',handleMessage) })
 </script>
 
 <template>
@@ -43,6 +55,7 @@ onBeforeUnmount(clearLoadTimer)
     </div>
 
     <iframe
+      ref="frame"
       class="v-business-scene-embed__frame"
       :src="workflowUrl"
       :title="$t('page.businessScene.iframeTitle')"
