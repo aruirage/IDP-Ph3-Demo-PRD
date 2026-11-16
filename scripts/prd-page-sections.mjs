@@ -9,7 +9,7 @@ export const pageSpecs=[
  {id:'ocr-confirmation',title:'OCR抽出确认',parts:[block('6.03')]},
  {id:'doctype-rules',title:'账票后处理规则',parts:[block('6.05'),block('6.03','#### 按组照合规则')]},
  {id:'doctype-review',title:'账票人工确认规则',parts:[block('6.06','7. 账票类别人工确认规则中','#### 用途指派与OCR模板联动'),block('6.03','#### 三类阈值的边界'),block('6.03','#### 自动采用规则')]},
- {id:'model-settings',title:'模型用途与账票模型设定',parts:[block('6.06','#### 功能点','7. 账票类别人工确认规则中'),block('6.06','#### 用途指派与OCR模板联动'),block('6.06','#### 页面与入口'),block('6.06','#### 按钮与启用条件'),block('6.06','#### 字段与参数规格'),block('6.06','#### 列表展示'),block('6.06','#### 异常与边界')]}
+ {id:'model-settings',title:'模型用途与OCR模型设定',parts:[block('6.06','#### 功能点','7. 账票类别人工确认规则中'),block('6.06','#### 用途指派与OCR模板联动'),block('6.06','#### 页面与入口'),block('6.06','#### 按钮与启用条件'),block('6.06','#### 字段与参数规格'),block('6.06','#### 列表展示'),block('6.06','#### 异常与边界')]}
 ];
 export const pageKey=id=>`prd/pages/${id}.md`;
 export function pageSpec(key){return pageSpecs.find(spec=>pageKey(spec.id)===key)}

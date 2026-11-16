@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import {p3,ocrTemplates} from '@/mocks/phase3'
 import OcrTemplateSettings from '@/components/phase3/OcrTemplateSettings.vue'
+import RequiredTag from '@/components/RequiredTag.vue'
 import { useI18n } from 'vue-i18n'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Connection, EditPen, Delete } from '@element-plus/icons-vue'
@@ -399,7 +400,7 @@ function updateUsageSelect(usageKey: ModelUsageKey, value: string | string[] | n
 
             >
               <div class="v-model-settings__usage-head">
-                <span class="v-model-settings__usage-label">{{ usage.label }}</span>
+                <span class="v-model-settings__usage-label">{{ usage.label }}<RequiredTag /></span>
               </div>
               <el-select
                 :model-value="usageSelectModel(usage.key)"
