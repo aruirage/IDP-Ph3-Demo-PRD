@@ -33,11 +33,12 @@ export function addSceneBusinessKeys(main, html) {
     function sceneBusinessKeyFieldDisabled(index,field) {const other=getSceneBusinessKey(1-index);return other.docType===getSceneBusinessKey(index).docType && other.field===field;}
     function validateSceneBusinessKeys(draft,required) {
       const values=(draft.businessKeys || []).map(key => sceneBusinessKeyOptionValue(key));
-      if(!values.some(Boolean))return '';
-      if(required && (values.length!==2 || values.some(value=>!value)))return t('業務キーを2件選択してください');
-      if(values[0] && values[0]===values[1])return t('業務キーには異なるフィールドを選択してください');
+      const selectedValues=values.filter(Boolean);
+      if(!selectedValues.length)return '';
+      if(required && (values.length!==2 || selectedValues.length!==2))return t('業務キーを2件選択してください');
+      if(new Set(selectedValues).size!==selectedValues.length)return t('業務キーには異なるフィールドを選択してください');
       const valid=new Set(sceneBusinessKeyOptions.value.map(option=>option.value));
-      if(values.some(value=>value && !valid.has(value)))return t('関連帳票の有効なフィールドを選択してください');
+      if(selectedValues.some(value => !valid.has(value)))return t('関連帳票の有効なフィールドを選択してください');
       return '';
     }
     watch(sceneBusinessKeyOptions, options => {
