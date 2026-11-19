@@ -4,10 +4,10 @@ export function addSceneBusinessKeys(main, html) {
  replace("      mainKey: '',\n      docFieldLinks:","      mainKey: '',\n      businessKeys: [createEmptySceneBusinessKey(), createEmptySceneBusinessKey()],\n      docFieldLinks:");
  replace("      sceneSetupDraft.mainKey = '';", "      sceneSetupDraft.mainKey = '';\n      sceneSetupDraft.businessKeys = [createEmptySceneBusinessKey(), createEmptySceneBusinessKey()];");
  replace('      sceneSetupDraft.description = data.scene?.description', "      sceneSetupDraft.businessKeys = [0, 1].map(index => normalizeSceneBusinessKey(data.scene?.businessKeys?.[index]));\n      sceneSetupDraft.description = data.scene?.description");
- replace("        mainKey: payload.mainKey || '',", "        mainKey: payload.mainKey || '',\n        businessKeys: (payload.businessKeys || []).map(key => [key?.docType || '', key?.field || '', String(key?.name || '').trim(), key?.required !== false]),");
+ replace("        mainKey: payload.mainKey || '',", "        mainKey: payload.mainKey || '',\n        businessKeys: (payload.businessKeys || []).flatMap(key => key?.docType && key?.field ? [[key.docType, key.field, String(key.name || '').trim(), key.required !== false]] : []),");
  replace('        mainKey: sceneSetupDraft.mainKey,\n        docFieldLinks:', '        mainKey: sceneSetupDraft.mainKey,\n        businessKeys: sceneSetupDraft.businessKeys,\n        docFieldLinks:');
  replace('        mainKey: data.scene?.primaryKey,', '        mainKey: data.scene?.primaryKey,\n        businessKeys: data.scene?.businessKeys,');
- replace("      data.scene.primaryKey = sceneSetupDraft.mainKey || '';", "      data.scene.primaryKey = sceneSetupDraft.mainKey || '';\n      data.scene.businessKeys = sceneSetupDraft.businessKeys.map(key => (key?.docType && key?.field) ? {docType:key.docType,field:key.field,name:String(key.name||'').trim()||key.field,required:key.required!==false} : null);");
+ replace("      data.scene.primaryKey = sceneSetupDraft.mainKey || '';", "      data.scene.primaryKey = sceneSetupDraft.mainKey || '';\n      data.scene.businessKeys = sceneSetupDraft.businessKeys.flatMap(key => (key?.docType && key?.field) ? [{docType:key.docType,field:key.field,name:String(key.name||'').trim()||key.field,required:key.required!==false}] : []);");
  replace('    function persistSceneSetupDraft(options = {}) {', `    function persistSceneSetupDraft(options = {}) {
       const businessKeyError=validateSceneBusinessKeys(sceneSetupDraft,!!options.validate);
       if(businessKeyError){ElementPlus.ElMessage.warning(businessKeyError);return false;}`);
@@ -33,6 +33,7 @@ export function addSceneBusinessKeys(main, html) {
     function sceneBusinessKeyFieldDisabled(index,field) {const other=getSceneBusinessKey(1-index);return other.docType===getSceneBusinessKey(index).docType && other.field===field;}
     function validateSceneBusinessKeys(draft,required) {
       const values=(draft.businessKeys || []).map(key => sceneBusinessKeyOptionValue(key));
+      if(!values.some(Boolean))return '';
       if(required && (values.length!==2 || values.some(value=>!value)))return t('業務キーを2件選択してください');
       if(values[0] && values[0]===values[1])return t('業務キーには異なるフィールドを選択してください');
       const valid=new Set(sceneBusinessKeyOptions.value.map(option=>option.value));

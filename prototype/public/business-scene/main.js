@@ -8960,7 +8960,9 @@ const appOptions = {
         documents: documents.map((doc) => doc.type),
         mainDocType: payload.mainDocType || '',
         mainKey: payload.mainKey || '',
-        businessKeys: (payload.businessKeys || []).map(key => [key?.docType || '', key?.field || '', String(key?.name || '').trim(), key?.required !== false]),
+        businessKeys: (payload.businessKeys || []).flatMap(key => key?.docType && key?.field
+          ? [[key.docType, key.field, String(key.name || '').trim(), key.required !== false]]
+          : []),
         docFieldLinks: links,
       });
     }
@@ -9001,7 +9003,9 @@ const appOptions = {
       data.scene.mainDocTypes = sceneSetupDraft.mainDocType ? [sceneSetupDraft.mainDocType] : [];
       data.scene.aggregateDocType = sceneSetupDraft.mainDocType;
       data.scene.primaryKey = sceneSetupDraft.mainKey || '';
-      data.scene.businessKeys = sceneSetupDraft.businessKeys.map(key => (key?.docType && key?.field) ? {docType:key.docType,field:key.field,name:String(key.name||'').trim()||key.field,required:key.required!==false} : null);
+      data.scene.businessKeys = sceneSetupDraft.businessKeys.flatMap(key => (key?.docType && key?.field)
+        ? [{docType:key.docType,field:key.field,name:String(key.name||'').trim()||key.field,required:key.required!==false}]
+        : []);
       data.scene.masterlessPolicy = SCENE_MATCHING_DEFAULTS.masterlessPolicy;
       data.scene.supplementPolicy = SCENE_MATCHING_DEFAULTS.supplementPolicy;
       data.scene.docFieldLinks = normalizeDocFieldLinks(
@@ -9568,6 +9572,7 @@ const appOptions = {
     function sceneBusinessKeyFieldDisabled(index,field) {const other=getSceneBusinessKey(1-index);return other.docType===getSceneBusinessKey(index).docType && other.field===field;}
     function validateSceneBusinessKeys(draft,required) {
       const values=(draft.businessKeys || []).map(key => sceneBusinessKeyOptionValue(key));
+      if(!values.some(Boolean))return '';
       if(required && (values.length!==2 || values.some(value=>!value)))return t('業務キーを2件選択してください');
       if(values[0] && values[0]===values[1])return t('業務キーには異なるフィールドを選択してください');
       const valid=new Set(sceneBusinessKeyOptions.value.map(option=>option.value));
