@@ -3,7 +3,7 @@ const WF_CANONICAL_LAYOUT_KEY = 'neosai-idp-wf-canonical-layout-v27';
 const appOptions = {
   setup() {
     
-    const businessKeyLabels = {'帳票を選択':'选择账票','フィールドを選択':'选择字段','業務キー':'业务键','業務キー1':'业务键1','業務キー2':'业务键2','帳票のフィールドを選択':'选择账票字段','業務キーを2件選択してください':'请选择两个业务键','業務キーには異なるフィールドを選択してください':'两个业务键不能选择同一字段','関連帳票の有効なフィールドを選択してください':'请选择关联账票中的有效字段'};
+    const businessKeyLabels = {'帳票を選択':'选择账票','フィールドを選択':'选择字段','業務キー':'业务键','業務キー1':'业务键1','業務キー2':'业务键2','帳票のフィールドを選択':'选择账票字段','業務キーを2件選択してください':'请选择两个业务键','業務キーには異なるフィールドを選択してください':'两个业务键不能选择同一字段','関連帳票の有効なフィールドを選択してください':'请选择关联账票中的有效字段','業務キー名':'业务键名称','業務キー名を入力':'输入业务键名称','必須／任意':'必填／任意','必須':'必填','任意':'任意'};
     const storedUiLanguage = new URLSearchParams(location.search).get('lang') || localStorage.getItem('neosai-idp-ui-language');
     const uiLanguage = ref(storedUiLanguage === 'zh' ? 'zh' : 'ja');
     window.addEventListener('message', event => {
@@ -109,7 +109,7 @@ const appOptions = {
       documents: [],
       mainDocType: '',
       mainKey: '',
-      businessKeys: ['', ''],
+      businessKeys: [createEmptySceneBusinessKey(), createEmptySceneBusinessKey()],
       docFieldLinks: [],
       aggregateRuleSettings: {},
     });
@@ -8902,7 +8902,7 @@ const appOptions = {
       sceneSetupDraft.documents = [];
       sceneSetupDraft.mainDocType = '';
       sceneSetupDraft.mainKey = '';
-      sceneSetupDraft.businessKeys = ['', ''];
+      sceneSetupDraft.businessKeys = [createEmptySceneBusinessKey(), createEmptySceneBusinessKey()];
       sceneSetupDraft.docFieldLinks = [];
       sceneSetupDraft.aggregateRuleSettings = {};
       resetSceneSetupNetworkExpandedDocs();
@@ -8913,7 +8913,7 @@ const appOptions = {
       resetSceneSetupNetworkExpandedDocs();
       sceneSetupDraft.sceneId = sceneId;
       sceneSetupDraft.name = data.scene?.name || sceneName || '新規シーン';
-      sceneSetupDraft.businessKeys = [0, 1].map(index => { const key=data.scene?.businessKeys?.[index];return key?.docType && key?.field ? JSON.stringify([key.docType,key.field]) : ''; });
+      sceneSetupDraft.businessKeys = [0, 1].map(index => normalizeSceneBusinessKey(data.scene?.businessKeys?.[index]));
       sceneSetupDraft.description = data.scene?.description || '';
       sceneSetupDraft.documents = normalizeSceneDocuments(cloneJson(data.scene?.documents || []));
       sceneSetupDraft.mainDocType = getSceneMainDocType(data.scene);
@@ -8960,7 +8960,7 @@ const appOptions = {
         documents: documents.map((doc) => doc.type),
         mainDocType: payload.mainDocType || '',
         mainKey: payload.mainKey || '',
-        businessKeys: payload.businessKeys || [],
+        businessKeys: (payload.businessKeys || []).map(key => [key?.docType || '', key?.field || '', String(key?.name || '').trim(), key?.required !== false]),
         docFieldLinks: links,
       });
     }
@@ -8984,7 +8984,7 @@ const appOptions = {
         documents: data.scene?.documents,
         mainDocType: getSceneMainDocType(data.scene),
         mainKey: data.scene?.primaryKey,
-        businessKeys: [0,1].map(index=>{const key=data.scene?.businessKeys?.[index];return key?.docType && key?.field ? JSON.stringify([key.docType,key.field]) : ''; }),
+        businessKeys: data.scene?.businessKeys,
         docFieldLinks: data.scene?.docFieldLinks,
       });
     }
@@ -9001,7 +9001,7 @@ const appOptions = {
       data.scene.mainDocTypes = sceneSetupDraft.mainDocType ? [sceneSetupDraft.mainDocType] : [];
       data.scene.aggregateDocType = sceneSetupDraft.mainDocType;
       data.scene.primaryKey = sceneSetupDraft.mainKey || '';
-      data.scene.businessKeys = sceneSetupDraft.businessKeys.map(value => {if(!value)return null;const [docType,field]=JSON.parse(value);return {docType,field};});
+      data.scene.businessKeys = sceneSetupDraft.businessKeys.map(key => (key?.docType && key?.field) ? {docType:key.docType,field:key.field,name:String(key.name||'').trim()||key.field,required:key.required!==false} : null);
       data.scene.masterlessPolicy = SCENE_MATCHING_DEFAULTS.masterlessPolicy;
       data.scene.supplementPolicy = SCENE_MATCHING_DEFAULTS.supplementPolicy;
       data.scene.docFieldLinks = normalizeDocFieldLinks(
@@ -9553,23 +9553,34 @@ const appOptions = {
     const sceneBusinessKeyOptions = computed(() => sceneSetupDraft.documents.flatMap(doc =>
       getSceneSetupFieldOptions(doc.type).map(field => ({value:JSON.stringify([doc.type,field]),label:getDocDisplayLabel(doc.type)+' / '+field}))
     ));
-    function getSceneBusinessKey(index) {
-      try { const [docType,field]=JSON.parse(sceneSetupDraft.businessKeys[index]||'[]');return {docType:docType||'',field:field||''}; } catch{return {docType:'',field:''};}
+    function createEmptySceneBusinessKey() { return {docType:'',field:'',name:'',required:true}; }
+    function normalizeSceneBusinessKey(key) {
+      if(!key?.docType || !key?.field)return createEmptySceneBusinessKey();
+      return {docType:key.docType,field:key.field,name:String(key.name||''),required:key.required!==false};
     }
-    function setSceneBusinessKeyDoc(index,docType) {sceneSetupDraft.businessKeys[index]=docType?JSON.stringify([docType,'']):'';}
-    function setSceneBusinessKeyField(index,field) {const docType=getSceneBusinessKey(index).docType;sceneSetupDraft.businessKeys[index]=docType?JSON.stringify([docType,field||'']):'';}
+    function sceneBusinessKeyOptionValue(key) {return key?.docType && key?.field ? JSON.stringify([key.docType,key.field]) : '';}
+    function getSceneBusinessKey(index) {return sceneSetupDraft.businessKeys[index] || createEmptySceneBusinessKey();}
+    function patchSceneBusinessKey(index,patch) {sceneSetupDraft.businessKeys[index]={...getSceneBusinessKey(index),...patch};}
+    function setSceneBusinessKeyDoc(index,docType) {patchSceneBusinessKey(index,{docType:docType||'',field:''});}
+    function setSceneBusinessKeyField(index,field) {patchSceneBusinessKey(index,{field:field||''});}
+    function setSceneBusinessKeyName(index,name) {patchSceneBusinessKey(index,{name:name||''});}
+    function setSceneBusinessKeyRequired(index,required) {patchSceneBusinessKey(index,{required:!!required});}
     function sceneBusinessKeyFieldDisabled(index,field) {const other=getSceneBusinessKey(1-index);return other.docType===getSceneBusinessKey(index).docType && other.field===field;}
     function validateSceneBusinessKeys(draft,required) {
-      const keys=draft.businessKeys || ['', ''];
-      if(required && (keys.length!==2 || keys.some(value=>!value)))return t('業務キーを2件選択してください');
-      if(keys[0] && keys[0]===keys[1])return t('業務キーには異なるフィールドを選択してください');
+      const values=(draft.businessKeys || []).map(key => sceneBusinessKeyOptionValue(key));
+      if(required && (values.length!==2 || values.some(value=>!value)))return t('業務キーを2件選択してください');
+      if(values[0] && values[0]===values[1])return t('業務キーには異なるフィールドを選択してください');
       const valid=new Set(sceneBusinessKeyOptions.value.map(option=>option.value));
-      if(keys.some(value=>value && !valid.has(value)))return t('関連帳票の有効なフィールドを選択してください');
+      if(values.some(value=>value && !valid.has(value)))return t('関連帳票の有効なフィールドを選択してください');
       return '';
     }
     watch(sceneBusinessKeyOptions, options => {
       const valid=new Set(options.map(option=>option.value));
-      sceneSetupDraft.businessKeys=sceneSetupDraft.businessKeys.map(value=>valid.has(value)?value:'');
+      sceneSetupDraft.businessKeys=sceneSetupDraft.businessKeys.map(key => {
+        if(!key)return createEmptySceneBusinessKey();
+        const value=sceneBusinessKeyOptionValue(key);
+        return value && !valid.has(value) ? {...key,docType:'',field:''} : key;
+      });
     });
     function getSceneSetupFieldOptions(docType) {
       return getDocSchema(docType).fields || [];
@@ -13774,7 +13785,7 @@ const appOptions = {
       sceneSetupMode,
       sceneSetupDraft,
       sceneBusinessKeyOptions,
-      getSceneBusinessKey, setSceneBusinessKeyDoc, setSceneBusinessKeyField, sceneBusinessKeyFieldDisabled,
+      getSceneBusinessKey, setSceneBusinessKeyDoc, setSceneBusinessKeyField, setSceneBusinessKeyName, setSceneBusinessKeyRequired, sceneBusinessKeyFieldDisabled,
       MAX_DOCS,
       configReuseDialogVisible,
       configReuseDraft,

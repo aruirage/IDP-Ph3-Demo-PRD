@@ -19,7 +19,7 @@ const {chromium,browserLaunchOptions}=require('./browser-test-runtime.cjs');
  const content=await f.locator('.scene-business-keys').innerText();assert.match(content,/請求番号/);assert.match(content,/証券番号/);
  await choose(0,'診断書');
  const selected=await f.evaluate(()=>document.querySelector('#app').__vue_app__._container._vnode.component.setupState.sceneSetupDraft.businessKeys);
- assert.deepEqual(JSON.parse(selected[0]),['診断書','']);
+ assert.deepEqual(JSON.parse(JSON.stringify(selected[0])),{docType:'診断書',field:'',name:'',required:true});
  const moduleBeforeAggregate=await f.evaluate(()=>{const key=document.querySelector('.scene-business-keys');const rule=[...document.querySelectorAll('.wf-step-card-head')].find(el=>el.textContent.includes('案件集約ルール'));return !!(key.compareDocumentPosition(rule)&Node.DOCUMENT_POSITION_FOLLOWING)});assert.ok(moduleBeforeAggregate);
  await p.getByText('中文',{exact:true}).click();await f.getByText('业务键1',{exact:true}).waitFor();
  assert.equal(errors.length,0,errors.join('\n'));console.log('PASS: two-stage selection, duplicate disabled, save/refresh, document change clears field, placement, Chinese labels');
